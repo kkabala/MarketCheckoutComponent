@@ -1,4 +1,5 @@
 This project is just a sample solution of code kata  with requirements as below:
+
 	- The component should be a library providing checkout functionality which calculates the total price of products provided
 	- Products can be added incrementally
 	- There are a number of predefined discounts rules which are applied when some condition is met:

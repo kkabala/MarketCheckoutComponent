@@ -1,16 +1,16 @@
-﻿using MarketCheckoutComponent.Infrastructure;
+﻿using System.Collections.Generic;
+using MarketCheckoutComponent.Model;
 using MarketCheckoutComponent.Services.Interfaces;
 
 namespace MarketCheckoutComponent.Services
 {
 	public class SalesHistoryService : ISalesHistoryService
 	{
-		private MarketCheckoutComponentContext context;
+		private List<Bill> salesHistory;
 
 		public SalesHistoryService()
 		{
-			context = new MarketCheckoutComponentContext();
+			salesHistory = new List<Bill>();
 		}
 	}
-
 }

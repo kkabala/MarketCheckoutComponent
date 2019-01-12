@@ -9,7 +9,6 @@ This project is just a sample solution of code kata  with requirements as below:
 		- while buying two or more selected products,
 		- when the total price exceeds some amount of money threshold
 	- Adding new discount rules should be as easy as possible
-	- Discounts do not sum up
 	- Adding new product types should be straightforward,
 	- There should be a possibility to get the data about sold products and applied discounts
 	- There should be a possibility to print bills to clients (in text form list of all products with the prices and applied discounts)

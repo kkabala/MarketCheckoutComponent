@@ -1,3 +1,5 @@
+<strong>Market Checkout Component </strong>
+
 This project is just a sample solution of code kata  with requirements as below:
 
 	- The component should be a library providing checkout functionality which calculates the total price of products provided
@@ -12,4 +14,4 @@ This project is just a sample solution of code kata  with requirements as below:
 	- There should be a possibility to get the data about sold products and applied discounts
 	- There should be a possibility to print bills to clients (in text form list of all products with the prices and applied discounts)
 	- The library should not use any external storage/interaction sources (like db, file, web service)
-
+	- The library should be created using TDD approach

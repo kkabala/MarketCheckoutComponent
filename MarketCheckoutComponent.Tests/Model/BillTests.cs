@@ -1,19 +1,18 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using FluentAssertions;
 using MarketCheckoutComponent.Model;
 using MarketCheckoutComponent.Model.Discounts.Interfaces;
 using Moq;
 using NUnit.Framework;
-using System.Linq;
 
-namespace MarketCheckoutComponent.Tests
+namespace MarketCheckoutComponent.Tests.Model
 {
 	[TestFixture]
 	public class BillTests
 	{
-		private Bill bill;
-		private string[] productNames = new string[] { "Test1", "Test2", "Test3" };
+		private readonly string[] productNames = { "Test1", "Test2", "Test3" };
 
-		private readonly decimal[] productPrices = new decimal[] { 5m, 2.5m, 6m };
+		private readonly decimal[] productPrices = { 5m, 2.5m, 6m };
 		private Product[] products;
 		private IDiscount[] discounts;
 
@@ -35,7 +34,7 @@ namespace MarketCheckoutComponent.Tests
 				new Product(productNames[1], productPrices[1]),
 
 				new Product(productNames[2], productPrices[2]),
-				new Product(productNames[2], productPrices[2]),
+				new Product(productNames[2], productPrices[2])
 			};
 		}
 
@@ -61,7 +60,7 @@ namespace MarketCheckoutComponent.Tests
 		public void ToString_ReturnsEntriesForEachProductType()
 		{
 			SetUpAllProducts();
-			bill = new Bill(products, discounts);
+			var bill = new Bill(products, discounts);
 
 			var result = bill.ToString();
 
@@ -75,7 +74,7 @@ namespace MarketCheckoutComponent.Tests
 		public void ToString_ReturnsGroupedEntries()
 		{
 			SetUpAllProducts();
-			bill = new Bill(products, discounts);
+			var bill = new Bill(products, discounts);
 			var result = bill.ToString().Split("\n");
 
 			//skip 0,1 as 0 & 1 are the bill header
@@ -93,7 +92,7 @@ namespace MarketCheckoutComponent.Tests
 		{
 			SetUpAllProducts();
 			SetUpAllDiscounts();
-			bill = new Bill(null, discounts);
+			var bill = new Bill(null, discounts);
 			var result = bill.ToString().Split("\n");
 
 			foreach (var singleDiscount in discounts)

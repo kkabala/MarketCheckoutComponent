@@ -1,28 +1,20 @@
-﻿using MarketCheckoutComponent.Model;
+﻿using System.Collections.Generic;
+using FluentAssertions;
+using MarketCheckoutComponent.Model;
 using MarketCheckoutComponent.Model.Discounts;
 using NUnit.Framework;
-using System.Collections.Generic;
-using FluentAssertions;
 
-namespace MarketCheckoutComponent.Tests
+namespace MarketCheckoutComponent.Tests.Model.Discounts
 {
 	[TestFixture]
 	public class BulkDiscountTests
 	{
-		private BulkDiscount bulkDiscount;
-
-		[TearDown]
-		public void TearDown()
-		{
-			bulkDiscount = null;
-		}
-
 		[TestCase("Christmas discount", "Product1", 3, 70, 40)]
 		[TestCase("Birthday discount", "Product2", 30, 520, 20)]
 		[TestCase("Sale discount", "Product3", 2, 80, 50)]
 		public void SingleDiscountIsApplied_WhenThereAreExactNumberOfProducts(string discountName, string productName, int itemsRequiredToApplyDiscount, decimal specialGroupPrice, decimal regularPrice)
 		{
-			bulkDiscount = new BulkDiscount(discountName,
+			var bulkDiscount = new BulkDiscount(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
@@ -51,7 +43,7 @@ namespace MarketCheckoutComponent.Tests
 			decimal regularPrice,
 			int bulkItemsSets)
 		{
-			bulkDiscount = new BulkDiscount(discountName,
+			var bulkDiscount = new BulkDiscount(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
@@ -79,7 +71,7 @@ namespace MarketCheckoutComponent.Tests
 			decimal specialGroupPrice, 
 			decimal regularPrice)
 		{
-			bulkDiscount = new BulkDiscount(discountName,
+			var bulkDiscount = new BulkDiscount(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
@@ -108,7 +100,7 @@ namespace MarketCheckoutComponent.Tests
 			decimal specialGroupPrice, 
 			decimal regularPrice)
 		{
-			bulkDiscount = new BulkDiscount(discountName,
+			var bulkDiscount = new BulkDiscount(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);

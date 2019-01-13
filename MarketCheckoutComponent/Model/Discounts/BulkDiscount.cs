@@ -1,5 +1,5 @@
-﻿using MarketCheckoutComponent.Model.Discounts.Interfaces;
-using System.Linq;
+﻿using System.Linq;
+using MarketCheckoutComponent.Model.Discounts.Interfaces;
 
 namespace MarketCheckoutComponent.Model.Discounts
 {
@@ -11,7 +11,7 @@ namespace MarketCheckoutComponent.Model.Discounts
 
 		public BulkDiscount(string discountName, string productName, int itemsRequiredToApplyDiscount, decimal specialGroupPrice)
 		{
-			this.Name = discountName;
+			Name = discountName;
 			this.productName = productName;
 			this.itemsRequiredToApplyDiscount = itemsRequiredToApplyDiscount;
 			this.specialGroupPrice = specialGroupPrice;

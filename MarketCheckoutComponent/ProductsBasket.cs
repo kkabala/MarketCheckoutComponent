@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MarketCheckoutComponent.Model;
 
 namespace MarketCheckoutComponent
 {
 	public class ProductsBasket
 	{
-		private List<Product> products;
+		private readonly List<Product> products;
 
 		public ProductsBasket()
 		{

@@ -2,6 +2,7 @@
 using FluentAssertions;
 using MarketCheckoutComponent.Model;
 using MarketCheckoutComponent.Model.Discounts.Interfaces;
+using MarketCheckoutComponent.Model.Interfaces;
 using Moq;
 using NUnit.Framework;
 
@@ -13,7 +14,7 @@ namespace MarketCheckoutComponent.Tests.Model
 		private readonly string[] productNames = { "Test1", "Test2", "Test3" };
 
 		private readonly decimal[] productPrices = { 5m, 2.5m, 6m };
-		private Product[] products;
+		private IProduct[] products;
 		private IDiscount[] discounts;
 
 		[TearDown]
@@ -25,7 +26,7 @@ namespace MarketCheckoutComponent.Tests.Model
 
 		public void SetUpAllProducts()
 		{
-			products = new[]
+			products = new IProduct[]
 			{
 				new Product(productNames[0], productPrices[0]),
 				new Product(productNames[0], productPrices[0]),
@@ -43,11 +44,11 @@ namespace MarketCheckoutComponent.Tests.Model
 			var discountMock1 = new Mock<IDiscount>();
 
 			discountMock1.Setup(m => m.Name).Returns("Christmas discount");
-			discountMock1.Setup(m => m.Calculate(It.IsAny<Product[]>())).Returns(-50m);
+			discountMock1.Setup(m => m.Calculate(It.IsAny<IProduct[]>())).Returns(-50m);
 
 			var discountMock2 = new Mock<IDiscount>();
 			discountMock2.Setup(m => m.Name).Returns("Sale discount");
-			discountMock2.Setup(m => m.Calculate(It.IsAny<Product[]>())).Returns(-100m);
+			discountMock2.Setup(m => m.Calculate(It.IsAny<IProduct[]>())).Returns(-100m);
 
 			discounts = new[]
 			{

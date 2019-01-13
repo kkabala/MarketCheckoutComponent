@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 using MarketCheckoutComponent.Model.Discounts.Interfaces;
+using MarketCheckoutComponent.Model.Interfaces;
 
 namespace MarketCheckoutComponent.Model
 {
@@ -8,13 +9,13 @@ namespace MarketCheckoutComponent.Model
 	{
 		private const string headerSeparator = "     ";
 
-		public Bill(Product[] products, IDiscount[] discounts)
+		public Bill(IProduct[] products, IDiscount[] discounts)
 		{
-			Products = products ?? new Product[]{};
+			Products = products ?? new IProduct[]{};
 			Discounts = discounts ?? new IDiscount[]{};
 		}
 
-		public Product[] Products { get; private set; }
+		public IProduct[] Products { get; private set; }
 		public IDiscount[] Discounts { get; private set; }
 
 		public override string ToString()

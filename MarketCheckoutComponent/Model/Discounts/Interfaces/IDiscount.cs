@@ -1,8 +1,10 @@
-﻿namespace MarketCheckoutComponent.Model.Discounts.Interfaces
+﻿using MarketCheckoutComponent.Model.Interfaces;
+
+namespace MarketCheckoutComponent.Model.Discounts.Interfaces
 {
 	public interface IDiscount
 	{
 		string Name { get; }
-		decimal Calculate(Product[] products);
+		decimal Calculate(IProduct[] products);
 	}
 }

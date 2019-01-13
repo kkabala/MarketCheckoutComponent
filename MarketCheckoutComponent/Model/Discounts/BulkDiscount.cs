@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using MarketCheckoutComponent.Model.Discounts.Interfaces;
+using MarketCheckoutComponent.Model.Interfaces;
 
 namespace MarketCheckoutComponent.Model.Discounts
 {
@@ -19,7 +20,7 @@ namespace MarketCheckoutComponent.Model.Discounts
 
 		public string Name { get; }
 
-		public decimal Calculate(Product[] products)
+		public decimal Calculate(IProduct[] products)
 		{
 			var discountedProducts = products.Where(m => m.Name == productName).ToList();
 

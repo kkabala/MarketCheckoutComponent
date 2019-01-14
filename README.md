@@ -12,6 +12,6 @@ This project is just a sample solution of code kata  with requirements as below:
 	- Adding new product types should be straightforward,
 	- There should be a possibility to get the data about sold products and applied discounts
 	- There should be a possibility to print bills to clients (in text form list of all products with the prices and applied discounts)
-	- The component stores in memory the history about sold products and discounts applied
+	- There is a possibility to store in memory the history about sold products and discounts applied
 	- The library should not use any external storage/interaction sources (like db, file, web service)
 	- The library should be created using TDD approach

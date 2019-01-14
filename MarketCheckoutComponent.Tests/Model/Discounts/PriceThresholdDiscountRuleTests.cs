@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using MarketCheckoutComponent.Model.Discounts;
+using MarketCheckoutComponent.Model.DiscountRules;
 using MarketCheckoutComponent.Model.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace MarketCheckoutComponent.Tests.Model.Discounts
 {
 	[TestFixture]
-	public class PriceThresholdDiscountTests
+	public class PriceThresholdDiscountRuleTests
 	{
 		[TestCase("Christmas package discount", 600, 10)]
 		[TestCase("Christmas package discount", 1300, 25)]
@@ -18,7 +18,7 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 		public void Calculate_ReturnsDiscount_WhenTotalProductsPriceIsEqualToThreshold(string discountName, int priceThreshold, int discountPercentage)
 		{
 			//Arrange
-			var packageDiscount = new PriceThresholdDiscount(discountName, priceThreshold, discountPercentage);
+			var packageDiscount = new PriceThresholdDiscountRule(discountName, priceThreshold, discountPercentage);
 			var productsInTheBasket = GetProducts(priceThreshold);
 
 			//Act
@@ -34,7 +34,7 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 		public void Calculate_ReturnsZeroDiscount_WhenTotalPriceIsBelowThreshold(string discountName, int priceThreshold, int discountPercentage)
 		{
 			//Arrange
-			var packageDiscount = new PriceThresholdDiscount(discountName, priceThreshold, discountPercentage);
+			var packageDiscount = new PriceThresholdDiscountRule(discountName, priceThreshold, discountPercentage);
 			var productsInTheBasket = GetProducts(priceThreshold-1);
 
 			//Act
@@ -68,7 +68,7 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 		public void Calculate_ReturnsSingleDiscount_WhenDiscountConditionsAreMetMultipleTimes(string discountName, int priceThreshold, int discountPercentage)
 		{
 			//Arrange
-			var priceThresholdDiscount = new PriceThresholdDiscount(discountName, priceThreshold, discountPercentage);
+			var priceThresholdDiscount = new PriceThresholdDiscountRule(discountName, priceThreshold, discountPercentage);
 			var productsInTheBasket = GetProducts(5*priceThreshold).ToList();
 
 			//Act
@@ -85,7 +85,7 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 		public void Calculate_ReturnsZeroDiscount_WhenNullProductsListIsPassed(string discountName, int priceThreshold, int discountPercentage)
 		{
 			//Arrange
-			var priceThresholdDiscount = new PriceThresholdDiscount(discountName, priceThreshold, discountPercentage);
+			var priceThresholdDiscount = new PriceThresholdDiscountRule(discountName, priceThreshold, discountPercentage);
 
 			//Act
 			var appliedDiscount = priceThresholdDiscount.Calculate(null);

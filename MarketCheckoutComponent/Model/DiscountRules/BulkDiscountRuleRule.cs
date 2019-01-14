@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MarketCheckoutComponent.Model.Discounts.Interfaces;
+using MarketCheckoutComponent.Model.DiscountRules.Interfaces;
 using MarketCheckoutComponent.Model.Interfaces;
 
-namespace MarketCheckoutComponent.Model.Discounts
+namespace MarketCheckoutComponent.Model.DiscountRules
 {
-	public class BulkDiscount : IDiscount
+	public class BulkDiscountRuleRule : IDiscountRule
 	{
 		private readonly string productName;
 		private readonly int itemsRequiredToApplyDiscount;
 		private readonly decimal specialGroupPrice;
 
-		public BulkDiscount(string discountName, string productName, int itemsRequiredToApplyDiscount, decimal specialGroupPrice)
+		public BulkDiscountRuleRule(string discountName, string productName, int itemsRequiredToApplyDiscount, decimal specialGroupPrice)
 		{
 			Name = discountName;
 			this.productName = productName;

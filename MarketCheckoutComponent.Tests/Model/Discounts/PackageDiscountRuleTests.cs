@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using MarketCheckoutComponent.Model.Discounts;
+using MarketCheckoutComponent.Model.DiscountRules;
 using MarketCheckoutComponent.Model.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace MarketCheckoutComponent.Tests.Model.Discounts
 {
 	[TestFixture]
-	public class PackageDiscountTests
+	public class PackageDiscountRuleTests
 	{
 		[TestCase("Christmas package discount", 10, new []{"ProductA", "ProductB"})]
 		[TestCase("Holiday package discount", 30, new []{"ProductA", "ProductB", "ProductC", "ProductD"})]
@@ -18,7 +18,7 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 		public void Calculate_ReturnsCorrectDiscount_WhenDiscountConditionsAreMet(string discountName, decimal discountAmount, string[] packageProductNames)
 		{
 			//Arrange
-			var packageDiscount = new PackageDiscount(discountName, discountAmount, packageProductNames);
+			var packageDiscount = new PackageDiscountRule(discountName, discountAmount, packageProductNames);
 			var productsInTheBasket = GetProducts(packageProductNames);
 
 			//Act
@@ -34,7 +34,7 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 		public void Calculate_ReturnsZeroDiscount_WhenDiscountConditionsAreNotMet(string discountName, decimal discountAmount, string[] packageProductNames)
 		{
 			//Arrange
-			var packageDiscount = new PackageDiscount(discountName, discountAmount, packageProductNames);
+			var packageDiscount = new PackageDiscountRule(discountName, discountAmount, packageProductNames);
 			var productsInTheBasket = GetProducts(packageProductNames.Take(packageProductNames.Length-1));
 
 			//Act
@@ -67,7 +67,7 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 		public void Calculate_ReturnsMultipleDiscounts_WhenDiscountConditionsAreMetMultipleTimes(string discountName, decimal discountAmount, string[] packageProductNames)
 		{
 			//Arrange
-			var packageDiscount = new PackageDiscount(discountName, discountAmount, packageProductNames);
+			var packageDiscount = new PackageDiscountRule(discountName, discountAmount, packageProductNames);
 			var productsInTheBasket = GetProducts(packageProductNames.Concat(packageProductNames));
 
 			//Act
@@ -83,7 +83,7 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 		public void Calculate_ReturnsZeroDiscount_WhenNullProductsListIsPassed(string discountName, decimal discountAmount, string[] packageProductNames)
 		{
 			//Arrange
-			var packageDiscount = new PackageDiscount(discountName, discountAmount, packageProductNames);
+			var packageDiscount = new PackageDiscountRule(discountName, discountAmount, packageProductNames);
 
 			//Act
 			var appliedDiscount = packageDiscount.Calculate(null);

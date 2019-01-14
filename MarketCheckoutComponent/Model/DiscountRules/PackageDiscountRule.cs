@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using MarketCheckoutComponent.Model.Discounts.Interfaces;
+using MarketCheckoutComponent.Model.DiscountRules.Interfaces;
 using MarketCheckoutComponent.Model.Interfaces;
 
-namespace MarketCheckoutComponent.Model.Discounts
+namespace MarketCheckoutComponent.Model.DiscountRules
 {
-	public class PackageDiscount : IDiscount
+	public class PackageDiscountRule : IDiscountRule
 	{
 		public string Name { get; }
 		private readonly decimal discountAmount;
 		private readonly string[] packageProductNames;
 
-		public PackageDiscount(string name, decimal discountAmount, params string[] packageProductNames)
+		public PackageDiscountRule(string name, decimal discountAmount, params string[] packageProductNames)
 		{
 			Name = name;
 			this.discountAmount = discountAmount;

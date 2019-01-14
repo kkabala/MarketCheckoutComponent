@@ -1,17 +1,17 @@
-﻿using MarketCheckoutComponent.Model.Discounts.Interfaces;
-using MarketCheckoutComponent.Model.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using MarketCheckoutComponent.Model.DiscountRules.Interfaces;
+using MarketCheckoutComponent.Model.Interfaces;
 
-namespace MarketCheckoutComponent.Model.Discounts
+namespace MarketCheckoutComponent.Model.DiscountRules
 {
-	public class PriceThresholdDiscount : IDiscount
+	public class PriceThresholdDiscountRule : IDiscountRule
 	{
 		public string Name { get; }
 		private readonly int priceThreshold;
 		private readonly int discountPercentage;
 
-		public PriceThresholdDiscount(string name, int priceThreshold, int discountPercentage)
+		public PriceThresholdDiscountRule(string name, int priceThreshold, int discountPercentage)
 		{
 			Name = name;
 			this.priceThreshold = priceThreshold;

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Text;
-using MarketCheckoutComponent.Model.Discounts.Interfaces;
+using MarketCheckoutComponent.Model.DiscountRules.Interfaces;
 using MarketCheckoutComponent.Model.Interfaces;
 
 namespace MarketCheckoutComponent.Model
@@ -9,14 +9,14 @@ namespace MarketCheckoutComponent.Model
 	{
 		private const string headerSeparator = "     ";
 
-		public Bill(IProduct[] products, IDiscount[] discounts)
+		public Bill(IProduct[] products, IDiscountRule[] discountsRule)
 		{
 			Products = products ?? new IProduct[]{};
-			Discounts = discounts ?? new IDiscount[]{};
+			DiscountsRule = discountsRule ?? new IDiscountRule[]{};
 		}
 
-		public IProduct[] Products { get; private set; }
-		public IDiscount[] Discounts { get; private set; }
+		public IProduct[] Products { get; }
+		public IDiscountRule[] DiscountsRule { get; }
 
 		public override string ToString()
 		{
@@ -56,12 +56,12 @@ namespace MarketCheckoutComponent.Model
 
 		private void ApplyDiscountsInfo(StringBuilder outputBuilder)
 		{
-			if (Discounts.Any())
+			if (DiscountsRule.Any())
 			{
 				outputBuilder.AppendLine();
 				outputBuilder.AppendLine("Discounts applied:");
 
-				foreach (var singleDiscount in Discounts)
+				foreach (var singleDiscount in DiscountsRule)
 				{
 					outputBuilder.Append(singleDiscount.Name);
 					outputBuilder.Append(": ");

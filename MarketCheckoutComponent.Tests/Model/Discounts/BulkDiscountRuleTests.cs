@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
 using MarketCheckoutComponent.Model;
-using MarketCheckoutComponent.Model.Discounts;
+using MarketCheckoutComponent.Model.DiscountRules;
 using NUnit.Framework;
 
 namespace MarketCheckoutComponent.Tests.Model.Discounts
 {
 	[TestFixture]
-	public class BulkDiscountTests
+	public class BulkDiscountRuleTests
 	{
 		[TestCase("Christmas discount", "Product1", 3, 70, 40)]
 		[TestCase("Birthday discount", "Product2", 30, 520, 20)]
 		[TestCase("Sale discount", "Product3", 2, 80, 50)]
 		public void SingleDiscountIsApplied_WhenThereAreExactNumberOfProducts(string discountName, string productName, int itemsRequiredToApplyDiscount, decimal specialGroupPrice, decimal regularPrice)
 		{
-			var bulkDiscount = new BulkDiscount(discountName,
+			var bulkDiscount = new BulkDiscountRuleRule(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
@@ -43,7 +43,7 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 			decimal regularPrice,
 			int bulkItemsSets)
 		{
-			var bulkDiscount = new BulkDiscount(discountName,
+			var bulkDiscount = new BulkDiscountRuleRule(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
@@ -71,7 +71,7 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 			decimal specialGroupPrice, 
 			decimal regularPrice)
 		{
-			var bulkDiscount = new BulkDiscount(discountName,
+			var bulkDiscount = new BulkDiscountRuleRule(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
@@ -100,7 +100,7 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 			decimal specialGroupPrice, 
 			decimal regularPrice)
 		{
-			var bulkDiscount = new BulkDiscount(discountName,
+			var bulkDiscount = new BulkDiscountRuleRule(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
@@ -119,7 +119,7 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 			decimal specialGroupPrice,
 			decimal regularPrice)
 		{
-			var bulkDiscount = new BulkDiscount(discountName,
+			var bulkDiscount = new BulkDiscountRuleRule(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);

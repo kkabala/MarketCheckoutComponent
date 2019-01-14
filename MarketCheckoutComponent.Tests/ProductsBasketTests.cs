@@ -1,6 +1,5 @@
 using FluentAssertions;
 using MarketCheckoutComponent.Model;
-using MarketCheckoutComponent.Services;
 using MarketCheckoutComponent.Services.Interfaces;
 using Moq;
 using NUnit.Framework;

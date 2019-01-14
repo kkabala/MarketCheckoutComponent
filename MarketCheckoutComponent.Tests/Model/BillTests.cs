@@ -72,7 +72,7 @@ namespace MarketCheckoutComponent.Tests.Model
 		}
 
 		[Test]
-		public void ToString_ReturnsGroupedEntries()
+		public void ToString_ReturnsGroupedProducts()
 		{
 			SetUpAllProducts();
 			var bill = new Bill(products, discountsRule);

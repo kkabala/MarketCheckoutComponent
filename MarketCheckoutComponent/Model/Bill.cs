@@ -36,6 +36,7 @@ namespace MarketCheckoutComponent.Model
 			outputBuilder.Append("Unit");
 			outputBuilder.Append(headerSeparator);
 			outputBuilder.Append("Special Price");
+			outputBuilder.AppendLine();
 			var headerLength = outputBuilder.Length;
 			outputBuilder.Append('-', headerLength);
 

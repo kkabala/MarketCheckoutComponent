@@ -8,13 +8,13 @@ namespace MarketCheckoutComponent.Model
 {
 	public class Bill
 	{
-		private const string productHeader = "Product";
-		private const string priceHeader = "Price";
-		private const string unitHeader = "Unit";
+		private const string ProductHeader = "Product";
+		private const string PriceHeader = "Price";
+		private const string UnitHeader = "Unit";
 
-		private const string productColumnFormatter = "{0, -15}";
-		private const string priceColumnFormatter = "{0, -8}";
-		private const string unitColumnFormatter = "{0, 5}";
+		private const string ProductColumnFormatter = "{0, -15}";
+		private const string PriceColumnFormatter = "{0, -8}";
+		private const string UnitColumnFormatter = "{0, 5}";
 
 		public Bill(IProduct[] products, IDiscountRule[] discountsRule)
 		{
@@ -36,9 +36,9 @@ namespace MarketCheckoutComponent.Model
 
 		private void ApplyProductsHeader(StringBuilder outputBuilder)
 		{
-			outputBuilder.Append(String.Format(productColumnFormatter, productHeader));
-			outputBuilder.Append(String.Format(priceColumnFormatter, priceHeader));
-			outputBuilder.Append(String.Format(unitColumnFormatter, unitHeader));
+			outputBuilder.Append(String.Format(ProductColumnFormatter, ProductHeader));
+			outputBuilder.Append(String.Format(PriceColumnFormatter, PriceHeader));
+			outputBuilder.Append(String.Format(UnitColumnFormatter, UnitHeader));
 			outputBuilder.AppendLine();
 			var headerLength = outputBuilder.Length;
 			outputBuilder.Append('-', headerLength);
@@ -49,9 +49,9 @@ namespace MarketCheckoutComponent.Model
 			foreach (var singleProductGroup in Products.GroupBy(m => m.Name))
 			{
 				outputBuilder.AppendLine();
-				outputBuilder.Append(String.Format(productColumnFormatter, singleProductGroup.Key));
-				outputBuilder.Append(String.Format(priceColumnFormatter, singleProductGroup.First().Price.ToString("F2")));
-				outputBuilder.Append(String.Format(unitColumnFormatter, singleProductGroup.Count()));
+				outputBuilder.Append(String.Format(ProductColumnFormatter, singleProductGroup.Key));
+				outputBuilder.Append(String.Format(PriceColumnFormatter, singleProductGroup.First().Price.ToString("F2")));
+				outputBuilder.Append(String.Format(UnitColumnFormatter, singleProductGroup.Count()));
 			}
 		}
 

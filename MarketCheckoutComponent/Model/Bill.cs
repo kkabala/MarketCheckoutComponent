@@ -45,7 +45,14 @@ namespace MarketCheckoutComponent.Model
 			ApplyProductsHeader(outputBuilder);
 			ApplyProductsInfo(outputBuilder);
 			ApplyDiscountsInfo(outputBuilder);
+			ApplyTotalInfo(outputBuilder);
 			return outputBuilder.ToString();
+		}
+
+		private void ApplyTotalInfo(StringBuilder outputBuilder)
+		{
+			outputBuilder.AppendLine();
+			outputBuilder.Append($"Total: {Total}");
 		}
 
 		private void ApplyProductsHeader(StringBuilder outputBuilder)

@@ -91,7 +91,8 @@ namespace MarketCheckoutComponent.Tests.Model
 
 			//Assert
 			//skip 0,1 as 0 & 1 are the bill's header
-			for (int i = 2; i < result.Length; i++)
+			//skil last, last-1 as they're the bill's footer
+			for (int i = 2; i < result.Length-2; i++)
 			{
 				var singleBillLine = result[i];
 				var currentProduct = products.First(m => singleBillLine.Contains(m.Name));
@@ -116,6 +117,25 @@ namespace MarketCheckoutComponent.Tests.Model
 				var discountInfo = result.Single(m => m.Contains(singleDiscount.Name));
 				discountInfo.Should().Contain(singleDiscount.Calculate(null).ToString("F2"));
 			}
+		}
+
+		[Test]
+		public void ToString_ReturnsInfoAboutTotalPrice()
+		{
+			//Arrange
+			SetUpAllProducts();
+			var bill = new Bill(products, null);
+			string totalFooter = "Total: ";
+
+
+			//Act
+			var result = bill.ToString().Split("\n");
+			var lastLine = result.Last();
+
+			//Assert
+			lastLine.Should().Contain("Total: ");
+			lastLine.Should().Contain(bill.Total.ToString());
+			lastLine.Length.Should().Be(totalFooter.Length+bill.Total.ToString().Length);
 		}
 
 		[Test]

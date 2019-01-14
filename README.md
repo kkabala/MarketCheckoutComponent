@@ -1,6 +1,6 @@
 <strong>Market Checkout Component </strong>
 
-This project is just a sample solution of code kata  with requirements as below:
+This project is just a sample solution of code kata  with requirements are as below:
 
 	- The component should be a library providing checkout functionality which calculates the total price of products provided
 	- Products can be added incrementally
@@ -15,3 +15,5 @@ This project is just a sample solution of code kata  with requirements as below:
 	- There is a possibility to store in memory the history about sold products and discounts applied
 	- The library should not use any external storage/interaction sources (like db, file, web service)
 	- The library should be created using TDD approach
+	
+	- OPTIONAL: Create rest web api which exposes adding products & checkout functionalities

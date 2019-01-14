@@ -4,11 +4,11 @@ using MarketCheckoutComponent.Services.Interfaces;
 
 namespace MarketCheckoutComponent.Services
 {
-	public class SalesHistoryService : ISalesHistoryService
+	public class InMemorySalesHistoryService : ISalesHistoryService
 	{
 		private readonly List<Bill> salesHistory;
 
-		public SalesHistoryService()
+		public InMemorySalesHistoryService()
 		{
 			salesHistory = new List<Bill>();
 		}

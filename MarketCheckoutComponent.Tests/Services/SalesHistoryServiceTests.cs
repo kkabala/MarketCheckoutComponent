@@ -12,7 +12,7 @@ namespace MarketCheckoutComponent.Tests.Services
 		public void Add_DoesNotAllowNulls()
 		{
 			//Arrange
-			var salesHistoryService = new SalesHistoryService();
+			var salesHistoryService = new InMemorySalesHistoryService();
 
 			//Act
 			salesHistoryService.Add(null);
@@ -25,7 +25,7 @@ namespace MarketCheckoutComponent.Tests.Services
 		public void Add_DoesNotAllowDuplicates()
 		{
 			//Arrange
-			var salesHistoryService = new SalesHistoryService();
+			var salesHistoryService = new InMemorySalesHistoryService();
 			var bill = new Bill(null, null);
 
 			//Act
@@ -40,7 +40,7 @@ namespace MarketCheckoutComponent.Tests.Services
 		public void GetAll_ReturnsAllPreviouslyAddedBills()
 		{
 			//Arrange
-			var salesHistoryService = new SalesHistoryService();
+			var salesHistoryService = new InMemorySalesHistoryService();
 			var bills = new[]
 			{
 				new Bill(null, null),

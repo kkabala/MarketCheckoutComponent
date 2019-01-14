@@ -16,8 +16,8 @@ namespace MarketCheckoutComponent.Model.DiscountRules
 			Name = name;
 			this.priceThreshold = priceThreshold;
 			this.discountPercentage = discountPercentage;
-
 		}
+
 		public decimal Calculate(IEnumerable<IProduct> products)
 		{
 			if (products == null)

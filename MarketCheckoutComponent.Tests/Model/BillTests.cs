@@ -85,6 +85,7 @@ namespace MarketCheckoutComponent.Tests.Model
 			//Arrange
 			SetUpAllProducts();
 			var bill = new Bill(products, discountsRules);
+			const int linesForHeaderAndFooter = 2;
 
 			//Act
 			var result = bill.ToString().Split("\n");
@@ -92,7 +93,7 @@ namespace MarketCheckoutComponent.Tests.Model
 			//Assert
 			//skip 0,1 as 0 & 1 are the bill's header
 			//skil last, last-1 as they're the bill's footer
-			for (int i = 2; i < result.Length-2; i++)
+			for (int i = linesForHeaderAndFooter; i < result.Length- linesForHeaderAndFooter; i++)
 			{
 				var singleBillLine = result[i];
 				var currentProduct = products.First(m => singleBillLine.Contains(m.Name));
@@ -133,7 +134,7 @@ namespace MarketCheckoutComponent.Tests.Model
 			var lastLine = result.Last();
 
 			//Assert
-			lastLine.Should().Contain("Total: ");
+			lastLine.Should().Contain(totalFooter);
 			lastLine.Should().Contain(bill.Total.ToString());
 			lastLine.Length.Should().Be(totalFooter.Length+bill.Total.ToString().Length);
 		}

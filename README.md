@@ -6,8 +6,9 @@ This project is just a sample solution of code kata  with requirements are as be
 	- Products can be added incrementally
 	- There are a number of predefined discounts rules which are applied when some condition is met:
 		- buying x number of a particular product 
-		- while buying two or more selected products,
-		- when the total price exceeds some amount of money threshold
+		- while buying two or more selected, different products,
+		- when the total price of order exceeds some amount of money threshold
+	- Details of discount rules above (like which exactly products take part in a discount or what is the value of threshold) are defined by an external client app which uses the library (do not implement the external client app)
 	- Adding new discount rules should be as easy as possible
 	- Adding new product types should be straightforward,
 	- There should be a possibility to get the data about sold products and applied discounts

@@ -74,6 +74,7 @@ namespace MarketCheckoutComponent.Model
 				outputBuilder.Append(String.Format(PriceColumnFormatter, singleProductGroup.First().Price.ToString("F2")));
 				outputBuilder.Append(String.Format(UnitColumnFormatter, singleProductGroup.Count()));
 			}
+			outputBuilder.AppendLine();
 		}
 
 		private void ApplyDiscountsInfo(StringBuilder outputBuilder)

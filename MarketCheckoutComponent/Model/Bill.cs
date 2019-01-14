@@ -11,10 +11,12 @@ namespace MarketCheckoutComponent.Model
 		private const string ProductHeader = "Product";
 		private const string PriceHeader = "Price";
 		private const string UnitHeader = "Unit";
+		private const string AmountHeader = "Amount";
 
 		private const string ProductColumnFormatter = "{0, -15}";
 		private const string PriceColumnFormatter = "{0, -8}";
 		private const string UnitColumnFormatter = "{0, 5}";
+		private const string AmountColumnFormatter = "{0, 8}";
 
 		public Bill(IProduct[] products, IDiscountRule[] discountsRule)
 		{
@@ -60,6 +62,7 @@ namespace MarketCheckoutComponent.Model
 			outputBuilder.Append(String.Format(ProductColumnFormatter, ProductHeader));
 			outputBuilder.Append(String.Format(PriceColumnFormatter, PriceHeader));
 			outputBuilder.Append(String.Format(UnitColumnFormatter, UnitHeader));
+			outputBuilder.Append(String.Format(AmountColumnFormatter, AmountHeader));
 			outputBuilder.AppendLine();
 			var headerLength = outputBuilder.Length;
 			outputBuilder.Append('-', headerLength);
@@ -70,9 +73,12 @@ namespace MarketCheckoutComponent.Model
 			foreach (var singleProductGroup in Products.GroupBy(m => m.Name))
 			{
 				outputBuilder.AppendLine();
+				var productPrice = singleProductGroup.First().Price;
+				var units = singleProductGroup.Count();
 				outputBuilder.Append(String.Format(ProductColumnFormatter, singleProductGroup.Key));
-				outputBuilder.Append(String.Format(PriceColumnFormatter, singleProductGroup.First().Price.ToString("F2")));
-				outputBuilder.Append(String.Format(UnitColumnFormatter, singleProductGroup.Count()));
+				outputBuilder.Append(String.Format(PriceColumnFormatter, productPrice.ToString("F2")));
+				outputBuilder.Append(String.Format(UnitColumnFormatter, units));
+				outputBuilder.Append(String.Format(AmountColumnFormatter, (units * productPrice).ToString("F2")));
 			}
 			outputBuilder.AppendLine();
 		}

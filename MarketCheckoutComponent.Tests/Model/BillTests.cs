@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MarketCheckoutComponent.Model;
 using MarketCheckoutComponent.Model.DiscountRules.Interfaces;
 using MarketCheckoutComponent.Model.Interfaces;
 using Moq;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 
 namespace MarketCheckoutComponent.Tests.Model
@@ -14,7 +15,7 @@ namespace MarketCheckoutComponent.Tests.Model
 	{
 		private readonly string[] productNames = { "Test1", "Test2", "Test3" };
 
-		private readonly decimal[] productPrices = { 55m, 29.5m, 68m };
+		private readonly decimal[] productPrices = { 55m, 29.512m, 68m };
 		private readonly int discount1Amount = -51;
 		private readonly int discount2Amount = -33;
 
@@ -63,6 +64,21 @@ namespace MarketCheckoutComponent.Tests.Model
 		}
 
 		[Test]
+		public void ToString_ReturnsHeaderWithBillColumnNames()
+		{
+			var billColumnNames = new[] { "Product", "Price", "Unit", "Amount" };
+			SetUpAllProducts();
+			var bill = new Bill(products, discountsRules);
+
+			//Act
+			var headerLine = bill.ToString().Split("\n").First();
+
+			//Assert
+			headerLine.Should().ContainAll(billColumnNames);
+		}
+
+
+		[Test]
 		public void ToString_ReturnsEntriesForEachProductType()
 		{
 			//Arrange
@@ -80,7 +96,7 @@ namespace MarketCheckoutComponent.Tests.Model
 		}
 
 		[Test]
-		public void ToString_ReturnsGroupedProducts()
+		public void ToString_ReturnsGroupedProductsWithAllColumnsFilled()
 		{
 			//Arrange
 			SetUpAllProducts();
@@ -93,12 +109,18 @@ namespace MarketCheckoutComponent.Tests.Model
 			//Assert
 			//skip 0,1 as 0 & 1 are the bill's header
 			//skil last, last-1 as they're the bill's footer
-			for (int i = linesForHeaderAndFooter; i < result.Length- linesForHeaderAndFooter; i++)
+			for (int i = linesForHeaderAndFooter; i < result.Length - linesForHeaderAndFooter; i++)
 			{
 				var singleBillLine = result[i];
 				var currentProduct = products.First(m => singleBillLine.Contains(m.Name));
 				var numberOfProducts = products.Count(m => m.Name == currentProduct.Name);
-				singleBillLine.Should().Contain(numberOfProducts.ToString());
+				var productPrice = currentProduct.Price;
+				var amount = (productPrice * numberOfProducts).ToString("F2");
+
+				singleBillLine.Should().ContainAll(currentProduct.Name, 
+					productPrice.ToString("F2"), 
+					numberOfProducts.ToString(), 
+					amount);
 			}
 		}
 
@@ -136,7 +158,7 @@ namespace MarketCheckoutComponent.Tests.Model
 			//Assert
 			lastLine.Should().Contain(totalFooter);
 			lastLine.Should().Contain(bill.Total.ToString());
-			lastLine.Length.Should().Be(totalFooter.Length+bill.Total.ToString().Length);
+			lastLine.Length.Should().Be(totalFooter.Length + bill.Total.ToString().Length);
 		}
 
 		[Test]
@@ -150,7 +172,7 @@ namespace MarketCheckoutComponent.Tests.Model
 			var total = bill.Total;
 
 			//Assert
-			total.Should().Be(productTestDataCopies*productPrices.Sum());
+			total.Should().Be(productTestDataCopies * productPrices.Sum());
 		}
 
 		[Test]

@@ -1,10 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using FluentAssertions;
 using MarketCheckoutComponent.Model;
 using MarketCheckoutComponent.Model.DiscountRules.Interfaces;
 using MarketCheckoutComponent.Model.Interfaces;
 using Moq;
 using NUnit.Framework;
+using System.Linq;
 
 namespace MarketCheckoutComponent.Tests.Model
 {
@@ -13,30 +14,34 @@ namespace MarketCheckoutComponent.Tests.Model
 	{
 		private readonly string[] productNames = { "Test1", "Test2", "Test3" };
 
-		private readonly decimal[] productPrices = { 5m, 2.5m, 6m };
+		private readonly decimal[] productPrices = { 55m, 29.5m, 68m };
+		private readonly int discount1Amount = -51;
+		private readonly int discount2Amount = -33;
+
 		private IProduct[] products;
-		private IDiscountRule[] discountsRule;
+		private IDiscountRule[] discountsRules;
+
+		private readonly int productTestDataCopies = 3;
 
 		[TearDown]
 		public void TearDown()
 		{
 			products = null;
-			discountsRule = null;
+			discountsRules = null;
 		}
 
 		public void SetUpAllProducts()
 		{
-			products = new IProduct[]
+			var productsList = new List<IProduct>();
+
+			for (int i = 0; i < productTestDataCopies; i++)
 			{
-				new Product(productNames[0], productPrices[0]),
-				new Product(productNames[0], productPrices[0]),
-				new Product(productNames[0], productPrices[0]),
-
-				new Product(productNames[1], productPrices[1]),
-
-				new Product(productNames[2], productPrices[2]),
-				new Product(productNames[2], productPrices[2])
+				productsList.Add(new Product(productNames[0], productPrices[0]));
+				productsList.Add(new Product(productNames[1], productPrices[1]));
+				productsList.Add(new Product(productNames[2], productPrices[2]));
 			};
+
+			products = productsList.ToArray();
 		}
 
 		public void SetUpAllDiscounts()
@@ -44,13 +49,13 @@ namespace MarketCheckoutComponent.Tests.Model
 			var discountMock1 = new Mock<IDiscountRule>();
 
 			discountMock1.Setup(m => m.Name).Returns("Christmas discount");
-			discountMock1.Setup(m => m.Calculate(It.IsAny<IProduct[]>())).Returns(-50m);
+			discountMock1.Setup(m => m.Calculate(It.IsAny<IProduct[]>())).Returns(discount1Amount);
 
 			var discountMock2 = new Mock<IDiscountRule>();
 			discountMock2.Setup(m => m.Name).Returns("Sale discount");
-			discountMock2.Setup(m => m.Calculate(It.IsAny<IProduct[]>())).Returns(-100m);
+			discountMock2.Setup(m => m.Calculate(It.IsAny<IProduct[]>())).Returns(discount2Amount);
 
-			discountsRule = new[]
+			discountsRules = new[]
 			{
 				discountMock1.Object,
 				discountMock2.Object
@@ -60,11 +65,14 @@ namespace MarketCheckoutComponent.Tests.Model
 		[Test]
 		public void ToString_ReturnsEntriesForEachProductType()
 		{
+			//Arrange
 			SetUpAllProducts();
-			var bill = new Bill(products, discountsRule);
+			var bill = new Bill(products, discountsRules);
 
+			//Act
 			var result = bill.ToString();
 
+			//Assert
 			for (int i = 0; i < productNames.Length; i++)
 			{
 				result.Should().ContainAll(productNames[i], productPrices[i].ToString("F2"));
@@ -74,11 +82,15 @@ namespace MarketCheckoutComponent.Tests.Model
 		[Test]
 		public void ToString_ReturnsGroupedProducts()
 		{
+			//Arrange
 			SetUpAllProducts();
-			var bill = new Bill(products, discountsRule);
+			var bill = new Bill(products, discountsRules);
+
+			//Act
 			var result = bill.ToString().Split("\n");
 
-			//skip 0,1 as 0 & 1 are the bill header
+			//Assert
+			//skip 0,1 as 0 & 1 are the bill's header
 			for (int i = 2; i < result.Length; i++)
 			{
 				var singleBillLine = result[i];
@@ -91,16 +103,50 @@ namespace MarketCheckoutComponent.Tests.Model
 		[Test]
 		public void ToString_ReturnsInfoAboutAllDiscounts()
 		{
-			SetUpAllProducts();
+			//Arrange
 			SetUpAllDiscounts();
-			var bill = new Bill(null, discountsRule);
+			var bill = new Bill(null, discountsRules);
+
+			//Act
 			var result = bill.ToString().Split("\n");
 
-			foreach (var singleDiscount in discountsRule)
+			//Assert
+			foreach (var singleDiscount in discountsRules)
 			{
 				var discountInfo = result.Single(m => m.Contains(singleDiscount.Name));
 				discountInfo.Should().Contain(singleDiscount.Calculate(null).ToString("F2"));
 			}
+		}
+
+		[Test]
+		public void Total_ReturnsSumOfProductPrices()
+		{
+			//Arrange
+			SetUpAllProducts();
+			var bill = new Bill(products, null);
+
+			//Act
+			var total = bill.Total;
+
+			//Assert
+			total.Should().Be(productTestDataCopies*productPrices.Sum());
+		}
+
+		[Test]
+		public void Total_SubstractsValueForAppliedDiscounts()
+		{
+			//Arrange
+			SetUpAllProducts();
+			SetUpAllDiscounts();
+			var bill = new Bill(products, discountsRules);
+			var productsPricesSum = productPrices.Sum() * productTestDataCopies;
+			var discountsSum = discount1Amount + discount2Amount;
+
+			//Act
+			var total = bill.Total;
+
+			//Assert
+			total.Should().Be(productsPricesSum + discountsSum);
 		}
 	}
 }

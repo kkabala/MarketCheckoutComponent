@@ -1,8 +1,8 @@
-﻿using System;
+﻿using MarketCheckoutComponent.Model.DiscountRules.Interfaces;
+using MarketCheckoutComponent.Model.Interfaces;
+using System;
 using System.Linq;
 using System.Text;
-using MarketCheckoutComponent.Model.DiscountRules.Interfaces;
-using MarketCheckoutComponent.Model.Interfaces;
 
 namespace MarketCheckoutComponent.Model
 {
@@ -18,12 +18,26 @@ namespace MarketCheckoutComponent.Model
 
 		public Bill(IProduct[] products, IDiscountRule[] discountsRule)
 		{
-			Products = products ?? new IProduct[]{};
-			DiscountsRule = discountsRule ?? new IDiscountRule[]{};
+			Products = products ?? new IProduct[] { };
+			DiscountsRule = discountsRule ?? new IDiscountRule[] { };
 		}
 
 		public IProduct[] Products { get; }
 		public IDiscountRule[] DiscountsRule { get; }
+
+		public decimal Total
+		{
+			get
+			{
+				var productsSum = Products.Sum(m => m.Price);
+				foreach (var discount in DiscountsRule)
+				{
+					productsSum += discount.Calculate(Products);
+				}
+
+				return productsSum;
+			}
+		}
 
 		public override string ToString()
 		{
@@ -42,8 +56,8 @@ namespace MarketCheckoutComponent.Model
 			outputBuilder.AppendLine();
 			var headerLength = outputBuilder.Length;
 			outputBuilder.Append('-', headerLength);
-
 		}
+
 		private void ApplyProductsInfo(StringBuilder outputBuilder)
 		{
 			foreach (var singleProductGroup in Products.GroupBy(m => m.Name))

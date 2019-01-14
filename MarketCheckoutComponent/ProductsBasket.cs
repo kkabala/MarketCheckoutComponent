@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using MarketCheckoutComponent.Model;
+using MarketCheckoutComponent.Model.Interfaces;
 
 namespace MarketCheckoutComponent
 {
 	public class ProductsBasket
 	{
-		private readonly List<Product> products;
+		private readonly List<IProduct> products;
 
 		public ProductsBasket()
 		{
-			products = new List<Product>();
+			products = new List<IProduct>();
 		}
 
 		public Bill Checkout()
@@ -18,7 +19,7 @@ namespace MarketCheckoutComponent
 			return bill;
 		}
 
-		public void AddProduct(Product product)
+		public void AddProduct(IProduct product)
 		{
 			products.Add(product);
 		}

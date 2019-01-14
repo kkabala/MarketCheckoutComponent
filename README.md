@@ -11,9 +11,8 @@ This project is just a sample solution of code kata  with requirements as below:
 	- Details of discount rules above (like which exactly products take part in a discount or what is the value of threshold) are defined by an external client app which uses the library (do not implement the external client app)
 	- Adding new discount rules should be as easy as possible
 	- Adding new product types should be straightforward,
-	- There should be a possibility to get the data about sold products and applied discounts
+	- There should be a possibility to get the data about already sold products and applied discounts (which can be stored in memory, but replacing it with any other storage, like a database, should be pretty easy from the architectural level)
 	- There should be a possibility to print bills to clients (in text form list of all products with the prices and applied discounts)
-	- There is a possibility to store in memory the history about sold products and discounts applied
 	- The library should not use any external storage/interaction sources (like db, file, web service)
 	- The library should be created using TDD approach
 	

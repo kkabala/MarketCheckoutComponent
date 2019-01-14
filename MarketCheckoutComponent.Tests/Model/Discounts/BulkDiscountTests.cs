@@ -94,10 +94,29 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 		[TestCase("Christmas discount", "Product1", 3, 70, 40)]
 		[TestCase("Birthday discount", "Product2", 30, 520, 20)]
 		[TestCase("Sale discount", "Product3", 2, 80, 50)]
-		public void DiscountIsNotSet_WhenAmountIsBelowTheBulkDiscount(string discountName, 
+		public void CalculateReturnsZeroDiscount_WhenAmountIsBelowTheBulkDiscount(string discountName, 
 			string productName,
 			int itemsRequiredToApplyDiscount, 
 			decimal specialGroupPrice, 
+			decimal regularPrice)
+		{
+			var bulkDiscount = new BulkDiscount(discountName,
+				productName,
+				itemsRequiredToApplyDiscount,
+				specialGroupPrice);
+
+			var discountPrice = bulkDiscount.Calculate(null);
+
+			discountPrice.Should().Be(0);
+		}
+
+		[TestCase("Christmas discount", "Product1", 3, 70, 40)]
+		[TestCase("Birthday discount", "Product2", 30, 520, 20)]
+		[TestCase("Sale discount", "Product3", 2, 80, 50)]
+		public void DiscountIsNotSet_WhenAmountIsBelowTheBulkDiscount(string discountName,
+			string productName,
+			int itemsRequiredToApplyDiscount,
+			decimal specialGroupPrice,
 			decimal regularPrice)
 		{
 			var bulkDiscount = new BulkDiscount(discountName,

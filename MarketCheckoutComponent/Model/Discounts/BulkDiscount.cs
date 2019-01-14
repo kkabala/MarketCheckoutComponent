@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MarketCheckoutComponent.Model.Discounts.Interfaces;
 using MarketCheckoutComponent.Model.Interfaces;
 
@@ -20,8 +21,13 @@ namespace MarketCheckoutComponent.Model.Discounts
 
 		public string Name { get; }
 
-		public decimal Calculate(IProduct[] products)
+		public decimal Calculate(IEnumerable<IProduct> products)
 		{
+			if (products == null)
+			{
+				return 0;
+			}
+
 			var discountedProducts = products.Where(m => m.Name == productName).ToList();
 
 			if (discountedProducts.Count < itemsRequiredToApplyDiscount)

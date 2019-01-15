@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketCheckoutComponent", "MarketCheckoutComponent\MarketCheckoutComponent.csproj", "{A093EEC4-BD89-44F9-AD7B-8018882B75FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketCheckoutComponent", "MarketCheckoutComponent\MarketCheckoutComponent.csproj", "{A093EEC4-BD89-44F9-AD7B-8018882B75FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketCheckoutComponent.Tests", "MarketCheckoutComponent.Tests\MarketCheckoutComponent.Tests.csproj", "{4B798496-9715-476D-8C81-79BBBCFC926D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketWebApi", "MarketWebApi\MarketWebApi.csproj", "{0C894BA6-C658-4EE5-B7D7-6E0333044961}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5A2FA95A-FE3F-4B45-9C7C-1D746AF36AA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketWebApi.Tests", "Tests\MarketWebApi.Tests\MarketWebApi.Tests.csproj", "{748B2853-09F7-4878-80A9-BA526ACF3E6C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketCheckoutComponent.Tests", "Tests\MarketCheckoutComponent.Tests\MarketCheckoutComponent.Tests.csproj", "{BFDE06D0-C979-4357-A188-E100916B2A69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,13 +23,25 @@ Global
 		{A093EEC4-BD89-44F9-AD7B-8018882B75FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A093EEC4-BD89-44F9-AD7B-8018882B75FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A093EEC4-BD89-44F9-AD7B-8018882B75FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4B798496-9715-476D-8C81-79BBBCFC926D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B798496-9715-476D-8C81-79BBBCFC926D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B798496-9715-476D-8C81-79BBBCFC926D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B798496-9715-476D-8C81-79BBBCFC926D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C894BA6-C658-4EE5-B7D7-6E0333044961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C894BA6-C658-4EE5-B7D7-6E0333044961}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C894BA6-C658-4EE5-B7D7-6E0333044961}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C894BA6-C658-4EE5-B7D7-6E0333044961}.Release|Any CPU.Build.0 = Release|Any CPU
+		{748B2853-09F7-4878-80A9-BA526ACF3E6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{748B2853-09F7-4878-80A9-BA526ACF3E6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{748B2853-09F7-4878-80A9-BA526ACF3E6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{748B2853-09F7-4878-80A9-BA526ACF3E6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFDE06D0-C979-4357-A188-E100916B2A69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFDE06D0-C979-4357-A188-E100916B2A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFDE06D0-C979-4357-A188-E100916B2A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFDE06D0-C979-4357-A188-E100916B2A69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{748B2853-09F7-4878-80A9-BA526ACF3E6C} = {5A2FA95A-FE3F-4B45-9C7C-1D746AF36AA3}
+		{BFDE06D0-C979-4357-A188-E100916B2A69} = {5A2FA95A-FE3F-4B45-9C7C-1D746AF36AA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8C0E033-639E-4EBF-8176-17EE54171490}

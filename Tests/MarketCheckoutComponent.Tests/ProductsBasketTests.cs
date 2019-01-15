@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentAssertions;
 using MarketCheckoutComponent.Model;
 using MarketCheckoutComponent.Services.Interfaces;
@@ -68,6 +69,168 @@ namespace MarketCheckoutComponent.Tests
 			var mock = new Mock<ISalesHistoryService>();
 			mock.Setup(m => m.Add(It.IsAny<Bill>()));
 			return mock;
+		}
+
+		[Test]
+		public void GetAll_ReturnsPreviouslyAddedProducts()
+		{
+			//Arrange
+			var products = new[] { new Product("testB", 1), new Product("SampleProduct", 4), new Product("aabbcc", 10) };
+			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
+
+			//Act
+			foreach (var singleProduct in products)
+			{
+				productsBasket.AddProduct(singleProduct);
+			}
+
+			var addedProducts = productsBasket.GetAll();
+
+			//Assert
+			addedProducts.Length.Should().Be(products.Length);
+			addedProducts.Should().Contain(products);
+		}
+
+		[Test]
+		public void GetAll_ReturnsEmptyArray_WhenNoProductsWereAdded()
+		{
+			//Arrange
+			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
+
+			//Act
+			var addedProducts = productsBasket.GetAll();
+
+			//Assert
+			addedProducts.Length.Should().Be(0);
+		}
+
+		[Test]
+		public void RemoveProducts_RemovesOnlyProductWithNameProvided()
+		{
+			//Arrange
+			string particularProductName = "ProductA";
+			var products = new[] { new Product("testB", 1), new Product(particularProductName, 4), new Product("aabbcc", 10) };
+			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
+
+			//Act
+			foreach (var singleProduct in products)
+			{
+				productsBasket.AddProduct(singleProduct);
+			}
+
+			productsBasket.RemoveProducts(particularProductName);
+			var addedProducts = productsBasket.GetAll();
+
+			//Assert
+			addedProducts.Length.Should().Be(products.Length - 1);
+			addedProducts.Should().NotContain(particularProductName);
+		}
+
+		[Test]
+		public void RemoveProducts_RemovesAllProductsWithNameProvided()
+		{
+			//Arrange
+			string particularProductName = "ProductA";
+			var products = new[]
+			{
+				new Product("testB", 1),
+				new Product(particularProductName, 4),
+				new Product(particularProductName, 4),
+				new Product("aabbcc", 10)
+			};
+			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
+
+			//Act
+			foreach (var singleProduct in products)
+			{
+				productsBasket.AddProduct(singleProduct);
+			}
+
+			productsBasket.RemoveProducts(particularProductName);
+			var addedProducts = productsBasket.GetAll();
+
+			//Assert
+			addedProducts.Length.Should().Be(products.Length - products.Count(m=>m.Name==particularProductName));
+			addedProducts.Should().NotContain(particularProductName);
+		}
+
+		[TestCase("ProductA")]
+		[TestCase("")]
+		[TestCase(null)]
+		public void RemoveProducts_DoesNotRemoveAnything_WhenProductWereNotAddedPreviously(string particularProductName)
+		{
+			//Arrange
+			var products = new[] { new Product("testB", 1), new Product("aabbcc", 10) };
+			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
+
+			//Act
+			foreach (var singleProduct in products)
+			{
+				productsBasket.AddProduct(singleProduct);
+			}
+
+			productsBasket.RemoveProducts(particularProductName);
+			var addedProducts = productsBasket.GetAll();
+
+			//Assert
+			addedProducts.Length.Should().Be(products.Length);
+			addedProducts.Should().NotContain(m => m.Name == particularProductName);
+		}
+
+		[Test]
+		public void DecreaseProductUnits_RemovesOneUnitOfTheProductWithNameProvided()
+		{
+			//Arrange
+			string particularProductName = "ProductA";
+			var products = new[]
+			{
+				new Product("testB", 1),
+				new Product(particularProductName, 4),
+				new Product(particularProductName, 4),
+				new Product(particularProductName, 4),
+				new Product(particularProductName, 4),
+				new Product(particularProductName, 4),
+				new Product("aabbcc", 10)
+			};
+			var particularProductsUnits = products.Count(m => m.Name == particularProductName);
+			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
+
+			//Act
+			foreach (var singleProduct in products)
+			{
+				productsBasket.AddProduct(singleProduct);
+			}
+
+			productsBasket.DecreaseProductUnits(particularProductName);
+			var addedProducts = productsBasket.GetAll();
+
+			//Assert
+			addedProducts.Length.Should().Be(products.Length - 1);
+			addedProducts.Count(m => m.Name == particularProductName).Should().Be(particularProductsUnits-1);
+		}
+
+
+		[TestCase("ProductA")]
+		[TestCase("")]
+		[TestCase(null)]
+		public void DecreaseProductUnits_DoesNotRemoveAnything_WhenNoProductWithNameProvidedIsAdded(string particularProductName)
+		{
+			//Arrange
+			var products = new[] { new Product("testB", 1), new Product("aabbcc", 10) };
+			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
+
+			//Act
+			foreach (var singleProduct in products)
+			{
+				productsBasket.AddProduct(singleProduct);
+			}
+
+			productsBasket.DecreaseProductUnits(particularProductName);
+			var addedProducts = productsBasket.GetAll();
+
+			//Assert
+			addedProducts.Length.Should().Be(products.Length);
+			addedProducts.Should().NotContain(m => m.Name == particularProductName);
 		}
 	}
 }

@@ -4,6 +4,9 @@ This project is just a sample solution of code kata  with requirements as below:
 
 	- The component should be a library providing checkout functionality which calculates the total price of products provided
 	- Products can be added incrementally
+	- Names of products are unique (there are no more than 1 product with a particular name)
+	- All added products with the name specified can be removed at once
+	- Products unit amount can be decreased (if user choosed 2 units of the product, he can remove 1 unit)
 	- There are a number of predefined discounts rules which are applied when some condition is met:
 		- buying x number of a particular product 
 		- while buying two or more selected, different products,

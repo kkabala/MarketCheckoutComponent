@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MarketCheckoutComponent.Model.Interfaces;
+using Market.CheckoutComponent.Model.Interfaces;
 
 namespace Market.Infrastructure.Model
 {

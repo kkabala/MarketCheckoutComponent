@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketCheckoutComponent", "MarketCheckoutComponent\MarketCheckoutComponent.csproj", "{A093EEC4-BD89-44F9-AD7B-8018882B75FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.CheckoutComponent", "Market.CheckoutComponent\Market.CheckoutComponent.csproj", "{A093EEC4-BD89-44F9-AD7B-8018882B75FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketWebApi", "MarketWebApi\MarketWebApi.csproj", "{0C894BA6-C658-4EE5-B7D7-6E0333044961}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.WebApi", "Market.WebApi\Market.WebApi.csproj", "{0C894BA6-C658-4EE5-B7D7-6E0333044961}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5A2FA95A-FE3F-4B45-9C7C-1D746AF36AA3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketWebApi.Tests", "Tests\MarketWebApi.Tests\MarketWebApi.Tests.csproj", "{748B2853-09F7-4878-80A9-BA526ACF3E6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.WebApi.Tests", "Tests\Market.WebApi.Tests\Market.WebApi.Tests.csproj", "{748B2853-09F7-4878-80A9-BA526ACF3E6C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketCheckoutComponent.Tests", "Tests\MarketCheckoutComponent.Tests\MarketCheckoutComponent.Tests.csproj", "{BFDE06D0-C979-4357-A188-E100916B2A69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.CheckoutComponent.Tests", "Tests\Market.CheckoutComponent.Tests\Market.CheckoutComponent.Tests.csproj", "{BFDE06D0-C979-4357-A188-E100916B2A69}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market.Infrastructure", "Market.Infrastructure\Market.Infrastructure.csproj", "{DCF817AC-E9DB-4A2A-99F5-203CCA720830}"
 EndProject

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
+using Market.CheckoutComponent.Model;
 using Market.Infrastructure.Utilities;
-using MarketCheckoutComponent.Model;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;

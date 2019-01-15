@@ -1,6 +1,6 @@
-﻿using MarketCheckoutComponent.Model;
-using MarketCheckoutComponent.Services.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Market.CheckoutComponent.Model;
+using Market.CheckoutComponent.Services.Interfaces;
 
 namespace Market.Infrastructure.Utilities
 {

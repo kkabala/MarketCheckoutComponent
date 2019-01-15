@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Market.CheckoutComponent.Model;
 using Market.Infrastructure.Model;
-using MarketCheckoutComponent.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Market.Infrastructure

@@ -24,7 +24,7 @@ namespace MarketCheckoutComponent
 			return bill;
 		}
 
-		public void AddProduct(IProduct product)
+		public void Add(IProduct product)
 		{
 			products.Add(product);
 		}
@@ -34,7 +34,7 @@ namespace MarketCheckoutComponent
 			return products.ToArray();
 		}
 
-		public void RemoveProducts(string productsName)
+		public void Remove(string productsName)
 		{
 			var productsToBeRemoved = new List<IProduct>();
 			foreach (var product in products.Where(m=> m.Name == productsName))
@@ -44,7 +44,7 @@ namespace MarketCheckoutComponent
 				products.Remove(product);
 		}
 
-		public void DecreaseProductUnits(string particularProductName)
+		public void DecreaseUnits(string particularProductName)
 		{
 			var productToBeRemoved = products.FirstOrDefault(m => m.Name == particularProductName);
 			products.Remove(productToBeRemoved);

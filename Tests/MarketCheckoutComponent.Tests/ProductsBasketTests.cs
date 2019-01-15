@@ -14,13 +14,13 @@ namespace MarketCheckoutComponent.Tests
 		[TestCase(10)]
 		[TestCase(2)]
 		[TestCase(1)]
-		public void AddProduct_AddsNewEntryToTheBasket(int numberOfProducts)
+		public void Add_AddsNewEntryToTheBasket(int numberOfProducts)
 		{
 			//Arrange
 			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
 			for (int i = 0; i < numberOfProducts; i++)
 			{
-				productsBasket.AddProduct(new Product());
+				productsBasket.Add(new Product());
 			}
 
 			//Act
@@ -81,7 +81,7 @@ namespace MarketCheckoutComponent.Tests
 			//Act
 			foreach (var singleProduct in products)
 			{
-				productsBasket.AddProduct(singleProduct);
+				productsBasket.Add(singleProduct);
 			}
 
 			var addedProducts = productsBasket.GetAll();
@@ -105,7 +105,7 @@ namespace MarketCheckoutComponent.Tests
 		}
 
 		[Test]
-		public void RemoveProducts_RemovesOnlyProductWithNameProvided()
+		public void Remove_RemovesOnlyProductWithNameProvided()
 		{
 			//Arrange
 			string particularProductName = "ProductA";
@@ -115,10 +115,10 @@ namespace MarketCheckoutComponent.Tests
 			//Act
 			foreach (var singleProduct in products)
 			{
-				productsBasket.AddProduct(singleProduct);
+				productsBasket.Add(singleProduct);
 			}
 
-			productsBasket.RemoveProducts(particularProductName);
+			productsBasket.Remove(particularProductName);
 			var addedProducts = productsBasket.GetAll();
 
 			//Assert
@@ -127,7 +127,7 @@ namespace MarketCheckoutComponent.Tests
 		}
 
 		[Test]
-		public void RemoveProducts_RemovesAllProductsWithNameProvided()
+		public void Remove_RemovesAllProductsWithNameProvided()
 		{
 			//Arrange
 			string particularProductName = "ProductA";
@@ -143,10 +143,10 @@ namespace MarketCheckoutComponent.Tests
 			//Act
 			foreach (var singleProduct in products)
 			{
-				productsBasket.AddProduct(singleProduct);
+				productsBasket.Add(singleProduct);
 			}
 
-			productsBasket.RemoveProducts(particularProductName);
+			productsBasket.Remove(particularProductName);
 			var addedProducts = productsBasket.GetAll();
 
 			//Assert
@@ -157,7 +157,7 @@ namespace MarketCheckoutComponent.Tests
 		[TestCase("ProductA")]
 		[TestCase("")]
 		[TestCase(null)]
-		public void RemoveProducts_DoesNotRemoveAnything_WhenProductWereNotAddedPreviously(string particularProductName)
+		public void Remove_DoesNotRemoveAnything_WhenProductWereNotAddedPreviously(string particularProductName)
 		{
 			//Arrange
 			var products = new[] { new Product("testB", 1), new Product("aabbcc", 10) };
@@ -166,10 +166,10 @@ namespace MarketCheckoutComponent.Tests
 			//Act
 			foreach (var singleProduct in products)
 			{
-				productsBasket.AddProduct(singleProduct);
+				productsBasket.Add(singleProduct);
 			}
 
-			productsBasket.RemoveProducts(particularProductName);
+			productsBasket.Remove(particularProductName);
 			var addedProducts = productsBasket.GetAll();
 
 			//Assert
@@ -178,7 +178,7 @@ namespace MarketCheckoutComponent.Tests
 		}
 
 		[Test]
-		public void DecreaseProductUnits_RemovesOneUnitOfTheProductWithNameProvided()
+		public void DecreaseUnits_RemovesOneUnitOfTheProductWithNameProvided()
 		{
 			//Arrange
 			string particularProductName = "ProductA";
@@ -198,10 +198,10 @@ namespace MarketCheckoutComponent.Tests
 			//Act
 			foreach (var singleProduct in products)
 			{
-				productsBasket.AddProduct(singleProduct);
+				productsBasket.Add(singleProduct);
 			}
 
-			productsBasket.DecreaseProductUnits(particularProductName);
+			productsBasket.DecreaseUnits(particularProductName);
 			var addedProducts = productsBasket.GetAll();
 
 			//Assert
@@ -213,7 +213,7 @@ namespace MarketCheckoutComponent.Tests
 		[TestCase("ProductA")]
 		[TestCase("")]
 		[TestCase(null)]
-		public void DecreaseProductUnits_DoesNotRemoveAnything_WhenNoProductWithNameProvidedIsAdded(string particularProductName)
+		public void DecreaseUnits_DoesNotRemoveAnything_WhenNoProductWithNameProvidedIsAdded(string particularProductName)
 		{
 			//Arrange
 			var products = new[] { new Product("testB", 1), new Product("aabbcc", 10) };
@@ -222,10 +222,10 @@ namespace MarketCheckoutComponent.Tests
 			//Act
 			foreach (var singleProduct in products)
 			{
-				productsBasket.AddProduct(singleProduct);
+				productsBasket.Add(singleProduct);
 			}
 
-			productsBasket.DecreaseProductUnits(particularProductName);
+			productsBasket.DecreaseUnits(particularProductName);
 			var addedProducts = productsBasket.GetAll();
 
 			//Assert

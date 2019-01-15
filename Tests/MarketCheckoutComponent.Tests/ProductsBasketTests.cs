@@ -18,17 +18,33 @@ namespace MarketCheckoutComponent.Tests
 		{
 			//Arrange
 			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
+
+			//Act
 			for (int i = 0; i < numberOfProducts; i++)
 			{
 				productsBasket.Add(new Product());
 			}
 
-			//Act
-			var bill = productsBasket.Checkout();
+			var products = productsBasket.GetAll();
 
 			//Assert
-			bill.Products.Should().NotBeNull();
-			bill.Products.Length.Should().Be(numberOfProducts);
+			products.Should().NotBeNull();
+			products.Length.Should().Be(numberOfProducts);
+		}
+
+		[Test]
+		public void Add_DoesNotAddAnyItemsWhenNullIsPassed()
+		{
+			//Arrange
+			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
+
+			//Act
+			productsBasket.Add(null);
+			var products = productsBasket.GetAll();
+
+			//Assert
+			products.Should().NotBeNull();
+			products.Length.Should().Be(0);
 		}
 
 		[Test]

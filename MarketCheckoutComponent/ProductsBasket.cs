@@ -26,7 +26,8 @@ namespace MarketCheckoutComponent
 
 		public void Add(IProduct product)
 		{
-			products.Add(product);
+			if (product!= null)
+				products.Add(product);
 		}
 
 		public IProduct[] GetAll()

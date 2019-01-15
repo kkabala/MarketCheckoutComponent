@@ -1,9 +1,11 @@
-﻿using MarketCheckoutComponent.Model.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
+using MarketCheckoutComponent.Model.Interfaces;
 
-namespace MarketCheckoutComponent.Model
+namespace Market.Infrastructure.Model
 {
 	public class Product : IProduct
 	{
+		[Key]
 		public string Name { get; set; }
 		public decimal Price { get; set; }
 

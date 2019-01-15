@@ -2,6 +2,7 @@
 using FluentAssertions;
 using MarketCheckoutComponent.Model;
 using MarketCheckoutComponent.Model.DiscountRules;
+using MarketCheckoutComponent.Model.Interfaces;
 using NUnit.Framework;
 
 namespace MarketCheckoutComponent.Tests.Model.Discounts
@@ -9,6 +10,14 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 	[TestFixture]
 	public class BulkDiscountRuleTests
 	{
+		private ProductsMockObjectsGenerator productsGenerator;
+
+		[SetUp]
+		public void SetUp()
+		{
+			this.productsGenerator = new ProductsMockObjectsGenerator();
+		}
+
 		[TestCase("Christmas discount", "Product1", 3, 70, 40)]
 		[TestCase("Birthday discount", "Product2", 30, 520, 20)]
 		[TestCase("Sale discount", "Product3", 2, 80, 50)]
@@ -20,12 +29,12 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
 
-			var products = new List<Product>();
+			var products = new List<IProduct>();
 
 			int numberOfProducts = itemsRequiredToApplyDiscount;
 			for (int i = 0; i < numberOfProducts; i++)
 			{
-				products.Add(new Product(productName, regularPrice));
+				products.Add(productsGenerator.Generate(productName, regularPrice));
 			}
 
 			//Act
@@ -52,12 +61,12 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
 
-			var products = new List<Product>();
+			var products = new List<IProduct>();
 
 			int numberOfProducts = bulkItemsSets*itemsRequiredToApplyDiscount;
 			for (int i = 0; i < numberOfProducts; i++)
 			{
-				products.Add(new Product(productName, regularPrice));
+				products.Add(productsGenerator.Generate(productName, regularPrice));
 			}
 
 			//Act
@@ -83,13 +92,13 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
 
-			var products = new List<Product>();
+			var products = new List<IProduct>();
 
 			int additionalProductsAmount = itemsRequiredToApplyDiscount-1;
 			int numberOfProducts = itemsRequiredToApplyDiscount + additionalProductsAmount;
 			for (int i = 0; i < numberOfProducts; i++)
 			{
-				products.Add(new Product(productName, regularPrice));
+				products.Add(productsGenerator.Generate(productName, regularPrice));
 			}
 
 			//Act
@@ -137,12 +146,12 @@ namespace MarketCheckoutComponent.Tests.Model.Discounts
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
 
-			var products = new List<Product>();
+			var products = new List<IProduct>();
 			int amountOfProducts = itemsRequiredToApplyDiscount - 1;
 
 			for (int i = 0; i < amountOfProducts; i++)
 			{
-				products.Add(new Product(productName, regularPrice));
+				products.Add(productsGenerator.Generate(productName, regularPrice));
 			}
 
 			//Act

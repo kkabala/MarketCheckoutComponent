@@ -9,6 +9,14 @@ namespace MarketCheckoutComponent.Tests
 {
 	public class ProductsBasketTests
 	{
+		private ProductsMockObjectsGenerator productsGenerator;
+
+		[SetUp]
+		public void SetUp()
+		{
+			this.productsGenerator = new ProductsMockObjectsGenerator();
+		}
+
 		[TestCase(0)]
 		[TestCase(5)]
 		[TestCase(10)]
@@ -22,7 +30,7 @@ namespace MarketCheckoutComponent.Tests
 			//Act
 			for (int i = 0; i < numberOfProducts; i++)
 			{
-				productsBasket.Add(new Product());
+				productsBasket.Add(productsGenerator.Generate());
 			}
 
 			var products = productsBasket.GetAll();
@@ -91,7 +99,12 @@ namespace MarketCheckoutComponent.Tests
 		public void GetAll_ReturnsPreviouslyAddedProducts()
 		{
 			//Arrange
-			var products = new[] { new Product("testB", 1), new Product("SampleProduct", 4), new Product("aabbcc", 10) };
+			var products = new[]
+			{
+				productsGenerator.Generate("testB", 1),
+				productsGenerator.Generate("SampleProduct", 4),
+				productsGenerator.Generate("aabbcc", 10)
+			};
 			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
 
 			//Act
@@ -125,7 +138,12 @@ namespace MarketCheckoutComponent.Tests
 		{
 			//Arrange
 			string particularProductName = "ProductA";
-			var products = new[] { new Product("testB", 1), new Product(particularProductName, 4), new Product("aabbcc", 10) };
+			var products = new[]
+			{
+				productsGenerator.Generate("testB", 1),
+				productsGenerator.Generate(particularProductName, 4),
+				productsGenerator.Generate("aabbcc", 10)
+			};
 			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
 
 			//Act
@@ -149,10 +167,10 @@ namespace MarketCheckoutComponent.Tests
 			string particularProductName = "ProductA";
 			var products = new[]
 			{
-				new Product("testB", 1),
-				new Product(particularProductName, 4),
-				new Product(particularProductName, 4),
-				new Product("aabbcc", 10)
+				productsGenerator.Generate("testB", 1),
+				productsGenerator.Generate(particularProductName, 4),
+				productsGenerator.Generate(particularProductName, 4),
+				productsGenerator.Generate("aabbcc", 10)
 			};
 			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
 
@@ -176,7 +194,7 @@ namespace MarketCheckoutComponent.Tests
 		public void Remove_DoesNotRemoveAnything_WhenProductWereNotAddedPreviously(string particularProductName)
 		{
 			//Arrange
-			var products = new[] { new Product("testB", 1), new Product("aabbcc", 10) };
+			var products = new[] { productsGenerator.Generate("testB", 1), productsGenerator.Generate("aabbcc", 10) };
 			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
 
 			//Act
@@ -200,13 +218,13 @@ namespace MarketCheckoutComponent.Tests
 			string particularProductName = "ProductA";
 			var products = new[]
 			{
-				new Product("testB", 1),
-				new Product(particularProductName, 4),
-				new Product(particularProductName, 4),
-				new Product(particularProductName, 4),
-				new Product(particularProductName, 4),
-				new Product(particularProductName, 4),
-				new Product("aabbcc", 10)
+				productsGenerator.Generate("testB", 1),
+				productsGenerator.Generate(particularProductName, 4),
+				productsGenerator.Generate(particularProductName, 4),
+				productsGenerator.Generate(particularProductName, 4),
+				productsGenerator.Generate(particularProductName, 4),
+				productsGenerator.Generate(particularProductName, 4),
+				productsGenerator.Generate("aabbcc", 10)
 			};
 			var particularProductsUnits = products.Count(m => m.Name == particularProductName);
 			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
@@ -232,7 +250,7 @@ namespace MarketCheckoutComponent.Tests
 		public void DecreaseUnits_DoesNotRemoveAnything_WhenNoProductWithNameProvidedIsAdded(string particularProductName)
 		{
 			//Arrange
-			var products = new[] { new Product("testB", 1), new Product("aabbcc", 10) };
+			var products = new[] { productsGenerator.Generate("testB", 1), productsGenerator.Generate("aabbcc", 10) };
 			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object);
 
 			//Act

@@ -24,6 +24,14 @@ namespace MarketCheckoutComponent.Tests.Model
 
 		private readonly int productTestDataCopies = 3;
 
+		private ProductsMockObjectsGenerator productsGenerator;
+
+		[SetUp]
+		public void SetUp()
+		{
+			this.productsGenerator = new ProductsMockObjectsGenerator();
+		}
+
 		[TearDown]
 		public void TearDown()
 		{
@@ -37,9 +45,9 @@ namespace MarketCheckoutComponent.Tests.Model
 
 			for (int i = 0; i < productTestDataCopies; i++)
 			{
-				productsList.Add(new Product(productNames[0], productPrices[0]));
-				productsList.Add(new Product(productNames[1], productPrices[1]));
-				productsList.Add(new Product(productNames[2], productPrices[2]));
+				productsList.Add(productsGenerator.Generate(productNames[0], productPrices[0]));
+				productsList.Add(productsGenerator.Generate(productNames[1], productPrices[1]));
+				productsList.Add(productsGenerator.Generate(productNames[2], productPrices[2]));
 			};
 
 			products = productsList.ToArray();

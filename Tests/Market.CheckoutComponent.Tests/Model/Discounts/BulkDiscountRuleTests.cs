@@ -99,13 +99,14 @@ namespace Market.CheckoutComponent.Tests.Model.Discounts
 			{
 				products.Add(productsGenerator.Generate(productName, regularPrice));
 			}
+			var priceOfItemsWithoutTheDiscount = additionalProductsAmount * regularPrice;
 
 			//Act
 			var discountPrice = bulkDiscount.Calculate(products.ToArray());
 			var priceWithoutDiscounts = numberOfProducts * regularPrice;
 
 			//Assert
-			discountPrice.Should().Be(specialGroupPrice- priceWithoutDiscounts);
+			discountPrice.Should().Be(specialGroupPrice + priceOfItemsWithoutTheDiscount - priceWithoutDiscounts);
 		}
 
 		[TestCase("Christmas discount", "Product1", 3, 70, 40)]

@@ -38,9 +38,13 @@ namespace Market.CheckoutComponent.Model.DiscountRules
 			var numberOfDiscounts = discountedProducts.Count / itemsRequiredToApplyDiscount;
 
 			var discountPricesProductsSum = numberOfDiscounts * specialGroupPrice;
-			var regularPriceSum = discountedProducts.Count * discountedProducts.First().Price;
+			var regularPrice = discountedProducts.First().Price;
+			var regularPriceSum = discountedProducts.Count * regularPrice;
 
-			return discountPricesProductsSum - regularPriceSum;
+			var numberOfItemsWithoutTheDiscount = discountedProducts.Count - numberOfDiscounts * itemsRequiredToApplyDiscount;
+			var priceOfItemsWithoutTheDiscount = numberOfItemsWithoutTheDiscount * regularPrice;
+
+			return (discountPricesProductsSum+ priceOfItemsWithoutTheDiscount) - regularPriceSum;
 		}
 	}
 }

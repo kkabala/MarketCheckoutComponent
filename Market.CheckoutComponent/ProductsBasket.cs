@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Model;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
 
 namespace Market.CheckoutComponent
 {
-	public class ProductsBasket
+	public class ProductsBasket : IProductsBasket
 	{
 		private readonly List<IProduct> products;
 		private readonly ISalesHistoryService salesHistoryService;
@@ -17,7 +18,7 @@ namespace Market.CheckoutComponent
 			products = new List<IProduct>();
 		}
 
-		public Bill Checkout()
+		public IBill Checkout()
 		{
 			var bill = new Bill(products.ToArray(), null);
 			salesHistoryService.Add(bill);

@@ -1,6 +1,9 @@
 ﻿using System;
+using Market.CheckoutComponent.Model.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
 using Market.WebApi.Services;
+using Market.WebApi.Utilities;
+using Market.WebApi.Utilities.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +36,7 @@ namespace Market.WebApi
 
 			services.AddTransient<ISalesHistoryService, InMemorySalesHistoryService>();
 			services.AddTransient<IDataService, SampleDataService>();
+			services.AddTransient<IProductsBasketFactory, ProductsBasketFactory>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

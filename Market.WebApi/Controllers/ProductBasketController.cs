@@ -1,8 +1,6 @@
-﻿using Market.CheckoutComponent;
-using Market.CheckoutComponent.Model;
-using Market.CheckoutComponent.Model.Interfaces;
-using Market.CheckoutComponent.Services.Interfaces;
+﻿using Market.CheckoutComponent.Interfaces;
 using Market.WebApi.Services;
+using Market.WebApi.Utilities.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Market.WebApi.Controllers
@@ -11,25 +9,26 @@ namespace Market.WebApi.Controllers
     [ApiController]
     public class ProductBasketController : ControllerBase
     {
-	    private static ProductsBasket productsBasket;
+	    private static IProductsBasket productsBasket;
 	    private readonly IDataService dataService;
 
-		public ProductBasketController(IDataService dataService, ISalesHistoryService salesHistoryService)
+		public ProductBasketController(IDataService dataService, IProductsBasketFactory productsBasketFactory)
 		{
 			this.dataService = dataService;
+
 			if (productsBasket == null)
 			{
 				//For simplicity the api handles one user at a time
-				productsBasket = new ProductsBasket(salesHistoryService);
+				productsBasket = productsBasketFactory.Create();
 			}
 		}
 
 		[HttpGet]
-		public ActionResult<Bill> Checkout()
+		public ActionResult<string> Checkout()
 		{
 			var bill = productsBasket.Checkout();
 			productsBasket = null;
-			return bill;
+			return bill.ToString();
 		}
 
 		[HttpPost]

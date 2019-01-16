@@ -34,7 +34,6 @@ namespace Market.WebApi.Controllers
 		[HttpPost]
 	    public ActionResult Add(string productName)
 	    {
-			//TODO: Db seeding with products+changing parameter to the primary key, not the whole product data
 		    var product = dataService.GetProductByName(productName);
 			productsBasket.Add(product);
 			return Ok();

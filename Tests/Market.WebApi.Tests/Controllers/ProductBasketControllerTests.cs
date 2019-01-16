@@ -2,7 +2,7 @@
 using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.WebApi.Controllers;
-using Market.WebApi.Services;
+using Market.WebApi.Services.Interfaces;
 using Market.WebApi.Utilities.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -42,11 +42,13 @@ namespace Market.WebApi.Tests.Controllers
 
 		private Mock<IProductsBasketFactory> GetProductsBasketFactoryMock()
 		{
-			var mock = new Mock<IProductsBasketFactory>();
-			var basketMock = new Mock<IProductsBasket>();
 			var billMock = new Mock<IBill>();
 			billMock.Setup(m => m.ToString()).Returns(BillsTestToStringMethodOutput);
+
+			var basketMock = new Mock<IProductsBasket>();
 			basketMock.Setup(m => m.Checkout()).Returns(billMock.Object);
+
+			var mock = new Mock<IProductsBasketFactory>();
 			mock.Setup(m => m.Create()).Returns(basketMock.Object);
 
 			return mock;

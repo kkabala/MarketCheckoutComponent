@@ -1,7 +1,6 @@
-﻿using Market.CheckoutComponent.Model.DiscountRules.Interfaces;
-using Market.CheckoutComponent.Model.Interfaces;
+﻿using Market.CheckoutComponent.Model.Interfaces;
 
-namespace Market.WebApi.Services
+namespace Market.WebApi.Services.Interfaces
 {
 	public interface IDataService
 	{

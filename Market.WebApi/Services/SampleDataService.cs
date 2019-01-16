@@ -5,6 +5,7 @@ using Market.CheckoutComponent.Model.DiscountRules.Interfaces;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
 using Market.WebApi.Model;
+using Market.WebApi.Services.Interfaces;
 
 namespace Market.WebApi.Services
 {

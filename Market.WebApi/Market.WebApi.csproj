@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Market.CheckoutComponent\Market.CheckoutComponent.csproj" />
-    <ProjectReference Include="..\Market.Infrastructure\Market.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

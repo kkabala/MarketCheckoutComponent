@@ -38,7 +38,7 @@ namespace Market.CheckoutComponent.Tests.Model
 			discountsRules = null;
 		}
 
-		public void SetUpAllProducts()
+		private void SetUpAllProducts()
 		{
 			var productsList = new List<IProduct>();
 
@@ -52,22 +52,26 @@ namespace Market.CheckoutComponent.Tests.Model
 			products = productsList.ToArray();
 		}
 
-		public void SetUpAllDiscounts()
+		private void SetUpAllDiscounts()
 		{
-			var discountMock1 = new Mock<IDiscountRule>();
-
-			discountMock1.Setup(m => m.Name).Returns("Christmas discount");
-			discountMock1.Setup(m => m.Calculate(It.IsAny<IProduct[]>())).Returns(discount1Amount);
-
-			var discountMock2 = new Mock<IDiscountRule>();
-			discountMock2.Setup(m => m.Name).Returns("Sale discount");
-			discountMock2.Setup(m => m.Calculate(It.IsAny<IProduct[]>())).Returns(discount2Amount);
+			var discountMock1 = GetDiscountMock("Christmas discount", discount1Amount);
+			var discountMock2 = GetDiscountMock("Sale discount", discount2Amount);
 
 			discountsRules = new[]
 			{
 				discountMock1.Object,
 				discountMock2.Object
 			};
+		}
+
+		private Mock<IDiscountRule> GetDiscountMock(string name, decimal discountAmount)
+		{
+			var discountMock = new Mock<IDiscountRule>();
+
+			discountMock.Setup(m => m.Name).Returns(name);
+			discountMock.Setup(m => m.Calculate(It.IsAny<IProduct[]>())).Returns(discountAmount);
+
+			return discountMock;
 		}
 
 		[Test]
@@ -147,6 +151,24 @@ namespace Market.CheckoutComponent.Tests.Model
 				var discountInfo = result.Single(m => m.Contains(singleDiscount.Name));
 				discountInfo.Should().Contain(singleDiscount.Calculate(null).ToString("F2"));
 			}
+		}
+
+		[Test]
+		public void ToString_DoesNotReturnInfoAboutTheDiscountIfItsValueIsZero()
+		{
+			//Arrange
+			SetUpAllDiscounts();
+			var localDiscountRules = discountsRules.ToList();
+			var zeroDiscountRule = GetDiscountMock("Zero discount", 1).Object;
+			localDiscountRules.Add(zeroDiscountRule);
+
+			var bill = new Bill(null, localDiscountRules.ToArray());
+
+			//Act
+			var result = bill.ToString();
+
+			//Assert
+			result.Should().NotContain(zeroDiscountRule.Name);
 		}
 
 		[Test]

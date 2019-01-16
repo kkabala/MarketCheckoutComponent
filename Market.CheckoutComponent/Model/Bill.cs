@@ -92,9 +92,14 @@ namespace Market.CheckoutComponent.Model
 
 				foreach (var singleDiscount in DiscountsRules)
 				{
+					var discountValue = singleDiscount.Calculate(Products);
+					if (discountValue >= 0)
+					{
+						continue;
+					}
 					outputBuilder.Append(singleDiscount.Name);
 					outputBuilder.Append(": ");
-					outputBuilder.AppendLine(singleDiscount.Calculate(Products).ToString("F2"));
+					outputBuilder.AppendLine(discountValue.ToString("F2"));
 				}
 			}
 		}

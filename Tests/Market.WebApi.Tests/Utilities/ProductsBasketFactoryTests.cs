@@ -12,7 +12,7 @@ namespace Market.WebApi.Tests.Utilities
 		public void Create_ReturnsNewInstanceOfBasket()
 		{
 			//Arrange
-			var factory = new ProductsBasketFactory(null);
+			var factory = new ProductsBasketFactory(null, null);
 
 			//Act
 			var basket1 = factory.Create();

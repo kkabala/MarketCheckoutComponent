@@ -11,16 +11,19 @@ namespace Market.CheckoutComponent
 	{
 		private readonly List<IProduct> products;
 		private readonly ISalesHistoryService salesHistoryService;
+		private readonly IDiscountRulesProviderService discountRulesProviderService;
 
-		public ProductsBasket(ISalesHistoryService salesHistoryService)
+		public ProductsBasket(ISalesHistoryService salesHistoryService,
+			IDiscountRulesProviderService discountRulesProviderService)
 		{
 			this.salesHistoryService = salesHistoryService;
+			this.discountRulesProviderService = discountRulesProviderService;
 			products = new List<IProduct>();
 		}
 
 		public IBill Checkout()
 		{
-			var bill = new Bill(products.ToArray(), null);
+			var bill = new Bill(products.ToArray(), discountRulesProviderService?.GetAllDiscountRules());
 			salesHistoryService.Add(bill);
 			return bill;
 		}

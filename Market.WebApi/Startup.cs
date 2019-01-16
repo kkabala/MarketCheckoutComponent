@@ -34,6 +34,7 @@ namespace Market.WebApi
 
 			services.AddTransient<ISalesHistoryService, InMemorySalesHistoryService>();
 			services.AddTransient<IDataService, SampleDataService>();
+			services.AddTransient<IDiscountRulesProviderService, SampleDataService>();
 			services.AddTransient<IProductsBasketFactory, ProductsBasketFactory>();
 		}
 

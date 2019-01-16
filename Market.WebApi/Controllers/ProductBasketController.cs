@@ -2,7 +2,7 @@
 using Market.CheckoutComponent.Model;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
-using Market.Infrastructure;
+using Market.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Market.WebApi.Controllers
@@ -12,11 +12,11 @@ namespace Market.WebApi.Controllers
     public class ProductBasketController : ControllerBase
     {
 	    private static ProductsBasket productsBasket;
-	    private MarketDbContext context;
+	    private readonly IDataService dataService;
 
-		public ProductBasketController(MarketDbContext context, ISalesHistoryService salesHistoryService)
+		public ProductBasketController(IDataService dataService, ISalesHistoryService salesHistoryService)
 		{
-			this.context = context;
+			this.dataService = dataService;
 			if (productsBasket == null)
 			{
 				productsBasket = new ProductsBasket(salesHistoryService);
@@ -32,11 +32,12 @@ namespace Market.WebApi.Controllers
 		}
 
 		[HttpPost]
-	    public ActionResult Add(IProduct product)
+	    public ActionResult Add(string productName)
 	    {
 			//TODO: Db seeding with products+changing parameter to the primary key, not the whole product data
+		    var product = dataService.GetProductByName(productName);
 			productsBasket.Add(product);
-		    return Ok();
+			return Ok();
 	    }
 	}
 }

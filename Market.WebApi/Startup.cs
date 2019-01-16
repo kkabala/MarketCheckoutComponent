@@ -1,7 +1,6 @@
 ﻿using System;
 using Market.CheckoutComponent.Services.Interfaces;
-using Market.Infrastructure;
-using Market.Infrastructure.Utilities;
+using Market.WebApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -32,8 +31,7 @@ namespace Market.WebApi
 			});
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-			services.AddDbContext<MarketDbContext>();
-			services.AddTransient<ISalesHistoryService, DatabaseSalesHistoryService>();
+			services.AddTransient<ISalesHistoryService, InMemorySalesHistoryService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

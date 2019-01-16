@@ -1,8 +1,9 @@
 ﻿using FluentAssertions;
 using Market.CheckoutComponent.Model;
+using Market.CheckoutComponent.Model.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
-using Market.Infrastructure.Model;
 using Market.WebApi.Controllers;
+using Market.WebApi.Services;
 using Moq;
 using NUnit.Framework;
 
@@ -34,16 +35,26 @@ namespace Market.WebApi.Tests.Controllers
 		public void Checkout_ReturnsBillWithPreviouslyAddedProducts()
 		{
 			//Arrange
-			var controller = new ProductBasketController(null, GetSalesHistoryServiceMock().Object);
-			var product = new Product();
+			var product = GetMockedProduct("A", 50);
+			var dataService = new Mock<IDataService>();
+			dataService.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns(product);
+			var controller = new ProductBasketController(dataService.Object, GetSalesHistoryServiceMock().Object);
 
 			//Act
-			controller.Add(product);
+			controller.Add(product.Name);
 			var result = controller.Checkout();
 
 			//Assert
 			result.Value.Should().NotBeNull();
 			result.Value.Products.Should().Contain(product);
+		}
+
+		private IProduct GetMockedProduct(string name, decimal price)
+		{
+			var mock = new Mock<IProduct>();
+			mock.Setup(m => m.Name).Returns(name);
+			mock.Setup(m => m.Price).Returns(price);
+			return mock.Object;
 		}
 	}
 }

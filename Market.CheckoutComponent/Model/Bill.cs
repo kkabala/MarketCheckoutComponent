@@ -6,9 +6,9 @@ using Market.CheckoutComponent.Model.Interfaces;
 
 namespace Market.CheckoutComponent.Model
 {
-	public class Bill
+	public class Bill : IBill
 	{
-		private const string ProductHeader = "Product";
+		private const string ProductHeader = "BasicProduct";
 		private const string PriceHeader = "Price";
 		private const string UnitHeader = "Unit";
 		private const string AmountHeader = "Amount";
@@ -21,18 +21,18 @@ namespace Market.CheckoutComponent.Model
 		public Bill(IProduct[] products, IDiscountRule[] discountsRule)
 		{
 			Products = products ?? new IProduct[] { };
-			DiscountsRule = discountsRule ?? new IDiscountRule[] { };
+			DiscountsRules = discountsRule ?? new IDiscountRule[] { };
 		}
 
 		public IProduct[] Products { get; }
-		public IDiscountRule[] DiscountsRule { get; }
+		public IDiscountRule[] DiscountsRules { get; }
 
 		public decimal Total
 		{
 			get
 			{
 				var productsSum = Products.Sum(m => m.Price);
-				foreach (var discount in DiscountsRule)
+				foreach (var discount in DiscountsRules)
 				{
 					productsSum += discount.Calculate(Products);
 				}
@@ -85,12 +85,12 @@ namespace Market.CheckoutComponent.Model
 
 		private void ApplyDiscountsInfo(StringBuilder outputBuilder)
 		{
-			if (DiscountsRule.Any())
+			if (DiscountsRules.Any())
 			{
 				outputBuilder.AppendLine();
 				outputBuilder.AppendLine("Discounts applied:");
 
-				foreach (var singleDiscount in DiscountsRule)
+				foreach (var singleDiscount in DiscountsRules)
 				{
 					outputBuilder.Append(singleDiscount.Name);
 					outputBuilder.Append(": ");

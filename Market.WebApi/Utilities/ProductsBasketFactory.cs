@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Market.CheckoutComponent;
+﻿using Market.CheckoutComponent;
 using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
 using Market.WebApi.Utilities.Interfaces;

@@ -5,13 +5,13 @@ using Market.CheckoutComponent.Model.Interfaces;
 
 namespace Market.CheckoutComponent.Model.DiscountRules
 {
-	public class BulkDiscountRuleRule : IDiscountRule
+	public class BulkDiscountRule : IDiscountRule
 	{
 		private readonly string productName;
 		private readonly int itemsRequiredToApplyDiscount;
 		private readonly decimal specialGroupPrice;
 
-		public BulkDiscountRuleRule(string name, string productName, int itemsRequiredToApplyDiscount, decimal specialGroupPrice)
+		public BulkDiscountRule(string name, string productName, int itemsRequiredToApplyDiscount, decimal specialGroupPrice)
 		{
 			Name = name;
 			this.productName = productName;

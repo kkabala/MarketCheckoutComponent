@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
 using Market.CheckoutComponent.Interfaces;
-using Market.CheckoutComponent.Model;
 using Market.CheckoutComponent.Model.Interfaces;
-using Market.CheckoutComponent.Services.Interfaces;
 using Market.WebApi.Controllers;
 using Market.WebApi.Services;
 using Market.WebApi.Utilities.Interfaces;

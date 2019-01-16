@@ -23,7 +23,7 @@ namespace Market.CheckoutComponent.Tests.Model.Discounts
 		public void Calculate_AppliesSingleDiscount_WhenThereAreExactNumberOfProducts(string discountName, string productName, int itemsRequiredToApplyDiscount, decimal specialGroupPrice, decimal regularPrice)
 		{
 			//Arrange
-			var bulkDiscount = new BulkDiscountRuleRule(discountName,
+			var bulkDiscount = new BulkDiscountRule(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
@@ -55,7 +55,7 @@ namespace Market.CheckoutComponent.Tests.Model.Discounts
 			int bulkItemsSets)
 		{
 			//Arrange
-			var bulkDiscount = new BulkDiscountRuleRule(discountName,
+			var bulkDiscount = new BulkDiscountRule(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
@@ -86,7 +86,7 @@ namespace Market.CheckoutComponent.Tests.Model.Discounts
 			decimal regularPrice)
 		{
 			//Arrange
-			var bulkDiscount = new BulkDiscountRuleRule(discountName,
+			var bulkDiscount = new BulkDiscountRule(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
@@ -118,7 +118,7 @@ namespace Market.CheckoutComponent.Tests.Model.Discounts
 			decimal regularPrice)
 		{
 			//Arrange
-			var bulkDiscount = new BulkDiscountRuleRule(discountName,
+			var bulkDiscount = new BulkDiscountRule(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);
@@ -140,7 +140,7 @@ namespace Market.CheckoutComponent.Tests.Model.Discounts
 			decimal regularPrice)
 		{
 			//Arrange
-			var bulkDiscount = new BulkDiscountRuleRule(discountName,
+			var bulkDiscount = new BulkDiscountRule(discountName,
 				productName,
 				itemsRequiredToApplyDiscount,
 				specialGroupPrice);

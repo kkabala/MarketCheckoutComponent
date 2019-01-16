@@ -1,5 +1,4 @@
-﻿using Market.CheckoutComponent.Model;
-using Market.CheckoutComponent.Model.Interfaces;
+﻿using Market.CheckoutComponent.Model.Interfaces;
 
 namespace Market.CheckoutComponent.Interfaces
 {

@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Market.CheckoutComponent;
-using Market.CheckoutComponent.Interfaces;
 using Market.WebApi.Utilities;
 using NUnit.Framework;
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Market.CheckoutComponent.Model;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
 

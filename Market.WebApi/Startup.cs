@@ -32,6 +32,7 @@ namespace Market.WebApi
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
 			services.AddTransient<ISalesHistoryService, InMemorySalesHistoryService>();
+			services.AddTransient<IDataService, SampleDataService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -19,6 +19,7 @@ namespace Market.WebApi.Controllers
 			this.dataService = dataService;
 			if (productsBasket == null)
 			{
+				//For simplicity the api handles one user at a time
 				productsBasket = new ProductsBasket(salesHistoryService);
 			}
 		}

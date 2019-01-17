@@ -23,14 +23,9 @@ namespace Market.CheckoutComponent.Model.DiscountRules
 
 		public decimal Calculate(IEnumerable<IProduct> products)
 		{
-			if (products == null)
-			{
-				return 0;
-			}
+			var discountedProducts = products?.Where(m => m.Name == productName).ToList();
 
-			var discountedProducts = products.Where(m => m.Name == productName).ToList();
-
-			if (discountedProducts.Count < itemsRequiredToApplyDiscount)
+			if (discountedProducts == null || discountedProducts.Count < itemsRequiredToApplyDiscount)
 			{
 				return 0;
 			}

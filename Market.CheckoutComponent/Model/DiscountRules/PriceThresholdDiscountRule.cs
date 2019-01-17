@@ -20,12 +20,11 @@ namespace Market.CheckoutComponent.Model.DiscountRules
 
 		public decimal Calculate(IEnumerable<IProduct> products)
 		{
-			if (products == null)
-			{
-				return 0;
-			}
-			var productsSum = products.Sum(m => m.Price);
-			return productsSum >= priceThreshold ? -(discountPercentage * productsSum) / 100 : 0;
+			var productsSum = products?.Sum(m => m.Price);
+
+			return (productsSum.HasValue && productsSum.Value >= priceThreshold) 
+				? -(discountPercentage * productsSum.Value) / 100 
+				: 0;
 		}
 	}
 }

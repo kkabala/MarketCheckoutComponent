@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Market.CheckoutComponent.Model.DiscountRules.Interfaces;
+﻿using Market.CheckoutComponent.Model.DiscountRules.Interfaces;
 using Market.CheckoutComponent.Model.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Market.CheckoutComponent.Model.DiscountRules
 {
@@ -20,15 +20,12 @@ namespace Market.CheckoutComponent.Model.DiscountRules
 
 		public decimal Calculate(IEnumerable<IProduct> products)
 		{
-			if (products != null)
-			{
-				var groupedProducts = products.GroupBy(m => m.Name).ToList();
-				if (packageProductNames.All(m => groupedProducts.Any(p => p.Key == m)))
-				{
-					return discountAmount * groupedProducts.Select(m => m.Count()).Min();
-				}
-			}
-			return 0;
+			var groupedProducts = products?.GroupBy(m => m.Name).ToList();
+
+			return (groupedProducts != null 
+				&& packageProductNames.All(m => groupedProducts.Any(p => p.Key == m))) 
+				? discountAmount * groupedProducts.Select(m => m.Count()).Min() 
+				 : 0;
 		}
 	}
 }

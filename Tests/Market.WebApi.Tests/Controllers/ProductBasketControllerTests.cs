@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Threading.Tasks;
+using FluentAssertions;
 using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.WebApi.Controllers;
@@ -28,6 +29,48 @@ namespace Market.WebApi.Tests.Controllers
 			//Assert
 			result.Value.Should().NotBeNull();
 			result.Value.Should().Be(BillsTestToStringMethodOutput);
+		}
+
+		[Test]
+		public void BasketIsSavedBetweenControllerInstances()
+		{
+			//Arrange
+			var product = GetMockedProduct("A", 50);
+			var dataService = new Mock<IDataService>();
+			dataService.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns(product);
+			var factory = GetProductsBasketFactoryMock();
+
+			//Act
+			var controller1 = new BasketController(dataService.Object, factory.Object);
+			var controller2 = new BasketController(dataService.Object, factory.Object);
+
+			//Assert
+			factory.Verify(m => m.Create(), Times.Once);
+		}
+
+		[Test]
+		public void DecreaseUnits_ExecutesUnderlyingMethodInTheBasket()
+		{
+			//Arrange
+			var product = GetMockedProduct("A", 50);
+			var dataService = new Mock<IDataService>();
+			dataService.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns(product);
+
+			var billMock = new Mock<IBill>();
+			billMock.Setup(m => m.ToString()).Returns(BillsTestToStringMethodOutput);
+
+			var basketMock = new Mock<IProductsBasket>();
+			basketMock.Setup(m => m.Checkout()).Returns(billMock.Object);
+
+			var factoryMock = new Mock<IProductsBasketFactory>();
+			factoryMock.Setup(m => m.Create()).Returns(basketMock.Object);
+
+			//Act
+			var controller1 = new BasketController(dataService.Object, factoryMock.Object);
+			controller1.DecreaseUnits(product.Name);
+
+			//Assert
+			basketMock.Verify(m => m.DecreaseUnits(It.IsAny<string>()), Times.Once);
 		}
 
 		private IProduct GetMockedProduct(string name, decimal price)

@@ -1,6 +1,6 @@
 ﻿using Market.CheckoutComponent.Model.Interfaces;
 
-namespace Market.WebApi.Model
+namespace Market.CheckoutComponent.Model
 {
 	public class BasicProduct : IProduct
 	{

@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Market.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ProductBasketController : ControllerBase
+    public class BasketController : ControllerBase
     {
 	    private static IProductsBasket productsBasket;
 	    private readonly IDataService dataService;
 
-		public ProductBasketController(IDataService dataService, IProductsBasketFactory productsBasketFactory)
+		public BasketController(IDataService dataService, IProductsBasketFactory productsBasketFactory)
 		{
 			this.dataService = dataService;
 
@@ -31,8 +31,8 @@ namespace Market.WebApi.Controllers
 			return bill.ToString();
 		}
 
-		[HttpPost]
-	    public ActionResult Add(string productName)
+		[HttpPost("{productName}")]
+	    public ActionResult AddProduct(string productName)
 	    {
 		    var product = dataService.GetProductByName(productName);
 			productsBasket.Add(product);

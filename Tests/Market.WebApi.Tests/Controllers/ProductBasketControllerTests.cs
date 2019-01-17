@@ -19,10 +19,10 @@ namespace Market.WebApi.Tests.Controllers
 			var product = GetMockedProduct("A", 50);
 			var dataService = new Mock<IDataService>();
 			dataService.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns(product);
-			var controller = new ProductBasketController(dataService.Object, GetProductsBasketFactoryMock().Object);
+			var controller = new BasketController(dataService.Object, GetProductsBasketFactoryMock().Object);
 
 			//Act
-			controller.Add(product.Name);
+			controller.AddProduct(product.Name);
 			var result = controller.Checkout();
 
 			//Assert

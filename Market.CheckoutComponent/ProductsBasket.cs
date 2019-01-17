@@ -41,9 +41,7 @@ namespace Market.CheckoutComponent
 
 		public void Remove(string productsName)
 		{
-			var productsToBeRemoved = new List<IProduct>();
-			foreach (var product in products.Where(m=> m.Name == productsName))
-				productsToBeRemoved.Add(product);
+			var productsToBeRemoved = products.Where(m => m.Name == productsName).ToList();
 
 			foreach (var product in productsToBeRemoved)
 				products.Remove(product);

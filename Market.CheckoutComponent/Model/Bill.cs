@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Market.CheckoutComponent.Model.DiscountRules.Interfaces;
+using Market.CheckoutComponent.Model.Interfaces;
+using System;
 using System.Linq;
 using System.Text;
-using Market.CheckoutComponent.Model.DiscountRules.Interfaces;
-using Market.CheckoutComponent.Model.Interfaces;
 
 namespace Market.CheckoutComponent.Model
 {
@@ -31,19 +31,13 @@ namespace Market.CheckoutComponent.Model
 		{
 			get
 			{
-				var productsSum = Products.Sum(m => m.Price);
-				foreach (var discount in DiscountsRules)
-				{
-					productsSum += discount.Calculate(Products);
-				}
-
-				return productsSum;
+				return Products.Sum(m => m.Price) + DiscountsRules.Sum(discount => discount.Calculate(Products));
 			}
 		}
 
 		public override string ToString()
 		{
-			StringBuilder outputBuilder = new StringBuilder();
+			var outputBuilder = new StringBuilder();
 			ApplyProductsHeader(outputBuilder);
 			ApplyProductsInfo(outputBuilder);
 			ApplyDiscountsInfo(outputBuilder);
@@ -85,22 +79,23 @@ namespace Market.CheckoutComponent.Model
 
 		private void ApplyDiscountsInfo(StringBuilder outputBuilder)
 		{
-			if (DiscountsRules.Any())
+			if (!DiscountsRules.Any())
 			{
-				outputBuilder.AppendLine();
-				outputBuilder.AppendLine("Discounts applied:");
+				return;
+			}
+			outputBuilder.AppendLine();
+			outputBuilder.AppendLine("Discounts applied:");
 
-				foreach (var singleDiscount in DiscountsRules)
+			foreach (var singleDiscount in DiscountsRules)
+			{
+				var discountValue = singleDiscount.Calculate(Products);
+				if (discountValue >= 0)
 				{
-					var discountValue = singleDiscount.Calculate(Products);
-					if (discountValue >= 0)
-					{
-						continue;
-					}
-					outputBuilder.Append(singleDiscount.Name);
-					outputBuilder.Append(": ");
-					outputBuilder.AppendLine(discountValue.ToString("F2"));
+					continue;
 				}
+				outputBuilder.Append(singleDiscount.Name);
+				outputBuilder.Append(": ");
+				outputBuilder.AppendLine(discountValue.ToString("F2"));
 			}
 		}
 	}

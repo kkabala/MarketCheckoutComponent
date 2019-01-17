@@ -28,7 +28,7 @@ namespace Market.CheckoutComponent.Tests.Model
 		[SetUp]
 		public void SetUp()
 		{
-			this.productsGenerator = new ProductsMockObjectsGenerator();
+			productsGenerator = new ProductsMockObjectsGenerator();
 		}
 
 		[TearDown]

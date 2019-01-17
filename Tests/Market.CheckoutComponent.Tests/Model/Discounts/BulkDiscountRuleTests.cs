@@ -14,7 +14,7 @@ namespace Market.CheckoutComponent.Tests.Model.Discounts
 		[SetUp]
 		public void SetUp()
 		{
-			this.productsGenerator = new ProductsMockObjectsGenerator();
+			productsGenerator = new ProductsMockObjectsGenerator();
 		}
 
 		[TestCase("Christmas discount", "Product1", 3, 70, 40)]

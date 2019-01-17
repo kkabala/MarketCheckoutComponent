@@ -1,24 +1,32 @@
-using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Market.WebApi.IntegrationTests
 {
 	public class BasketControllerTests
 	{
-		private WebApplicationFactory<Startup> factory;
+		private const string ProductName = "A";
+		private const string BaseAddress = "api/Basket";
+		private const string AddAProductAddress = BaseAddress + "/AddProduct/" + ProductName;
+		private const string CheckoutAddress = BaseAddress + "/Checkout";
+		private const string DecreaseUnitsAddress = BaseAddress + "/DecreaseUnits";
+		private const string DecreaseUnitsOfAProduct = DecreaseUnitsAddress + "/A";
+		private HttpClient client;
 
 		[SetUp]
 		public void SetUp()
 		{
-			factory = new WebApplicationFactory<Startup>();
+			var factory = new WebApplicationFactory<Startup>();
+			client = factory.CreateClient();
 		}
 
-		[TestCase("api/Basket/Checkout")]
+		[TestCase(CheckoutAddress)]
 		public async Task GetEndpoints_ReturnSuccess(string url)
 		{
 			//Arrange
-			var client = factory.CreateClient();
 
 			//Act
 			var response = await client.GetAsync(url);
@@ -27,12 +35,11 @@ namespace Market.WebApi.IntegrationTests
 			response.EnsureSuccessStatusCode();
 		}
 
-		[TestCase("api/Basket/DecreaseUnits")]
-		[TestCase("api/Basket/AddProduct/A")]
+		[TestCase(DecreaseUnitsOfAProduct)]
+		[TestCase(AddAProductAddress)]
 		public async Task PostEndpoints_ReturnSuccess(string url)
 		{
 			//Arrange
-			var client = factory.CreateClient();
 
 			//Act
 			var response = await client.PostAsync(url, null);
@@ -40,5 +47,66 @@ namespace Market.WebApi.IntegrationTests
 			//Assert
 			response.EnsureSuccessStatusCode();
 		}
+
+		[TestCase(1)]
+		[TestCase(5)]
+		[TestCase(100)]
+		public async Task Checkout_ReturnsBillWithAddedProducts(int productsToAdd)
+		{
+			//Arrange
+
+			//Act
+			for (int i = 0; i < productsToAdd; i++)
+			{
+				await client.PostAsync(AddAProductAddress, null);
+			}
+
+			var checkoutResponse = await client.GetAsync(CheckoutAddress);
+
+			//Assert
+			checkoutResponse.EnsureSuccessStatusCode();
+			var billText = await checkoutResponse.Content.ReadAsStringAsync();
+			billText.Should().Contain(ProductName);
+			billText.Should().Contain(productsToAdd.ToString());
+		}
+
+		[TestCase(5)]
+		[TestCase(100)]
+		public async Task Checkout_ReturnsBillWithAddedMinusDecreasedProducts(int productsToAdd)
+		{
+			//Arrange
+
+			//Act
+			for (int i = 0; i < productsToAdd; i++)
+			{
+				await client.PostAsync(AddAProductAddress, null);
+			}
+
+			await client.PostAsync(DecreaseUnitsOfAProduct, null);
+			var checkoutResponse = await client.GetAsync(CheckoutAddress);
+
+			//Assert
+			checkoutResponse.EnsureSuccessStatusCode();
+			var billText = await checkoutResponse.Content.ReadAsStringAsync();
+			billText.Should().Contain(ProductName);
+			billText.Should().Contain($" {(productsToAdd-1)} ");
+		}
+
+		[Test]
+		public async Task Checkout_ReturnsBillWithNoProducts_WhenThereWereExecutedEqualNumberOfAddAndDecreaseMethods()
+		{
+			//Arrange
+
+			//Act
+			await client.PostAsync(AddAProductAddress, null);
+			await client.PostAsync(DecreaseUnitsOfAProduct, null);
+			var checkoutResponse = await client.GetAsync(CheckoutAddress);
+
+			//Assert
+			checkoutResponse.EnsureSuccessStatusCode();
+			var billText = await checkoutResponse.Content.ReadAsStringAsync();
+			billText.Should().NotContain($" {ProductName} ");
+		}
+
 	}
 }

@@ -39,7 +39,7 @@ namespace Market.WebApi.Controllers
 			return Ok();
 	    }
 
-		[HttpPost]
+		[HttpPost("{productName}")]
 	    public void DecreaseUnits(string productName)
 		{
 			productsBasket.DecreaseUnits(productName);

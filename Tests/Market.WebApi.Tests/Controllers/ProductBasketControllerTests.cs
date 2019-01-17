@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.WebApi.Controllers;

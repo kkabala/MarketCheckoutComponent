@@ -107,6 +107,5 @@ namespace Market.WebApi.IntegrationTests
 			var billText = await checkoutResponse.Content.ReadAsStringAsync();
 			billText.Should().NotContain($" {ProductName} ");
 		}
-
 	}
 }

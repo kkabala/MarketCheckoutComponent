@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using FluentAssertions;
-using Market.CheckoutComponent.Model.DiscountRules.Interfaces;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.WebApi.Services;
 using Moq;

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Market.CheckoutComponent.Model.DiscountRules.Interfaces;
 using Market.CheckoutComponent.Model.Interfaces;
 
 namespace Market.CheckoutComponent.Model.DiscountRules

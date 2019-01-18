@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Market.CheckoutComponent.Model.Interfaces;
 
-namespace Market.CheckoutComponent.Model.DiscountRules.Interfaces
+namespace Market.CheckoutComponent.Model.Interfaces
 {
 	public interface IDiscountRule
 	{

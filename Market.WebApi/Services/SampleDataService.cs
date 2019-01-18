@@ -2,7 +2,6 @@
 using System.Linq;
 using Market.CheckoutComponent.Model;
 using Market.CheckoutComponent.Model.DiscountRules;
-using Market.CheckoutComponent.Model.DiscountRules.Interfaces;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
 using Market.WebApi.Services.Interfaces;

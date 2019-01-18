@@ -1,6 +1,4 @@
-﻿using Market.CheckoutComponent.Model.DiscountRules.Interfaces;
-
-namespace Market.CheckoutComponent.Model.Interfaces
+﻿namespace Market.CheckoutComponent.Model.Interfaces
 {
 	public interface IBill
 	{

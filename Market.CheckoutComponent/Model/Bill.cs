@@ -1,5 +1,4 @@
-﻿using Market.CheckoutComponent.Model.DiscountRules.Interfaces;
-using Market.CheckoutComponent.Model.Interfaces;
+﻿using Market.CheckoutComponent.Model.Interfaces;
 using System;
 using System.Linq;
 using System.Text;

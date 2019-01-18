@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Moq" Version="4.10.1" />
     <PackageReference Include="nunit" Version="3.10.1" />
@@ -17,12 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Market.WebApi\Market.WebApi.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="FluentAssertions">
-      <HintPath>C:\Users\PLKRKAB\.nuget\packages\fluentassertions\5.5.3\lib\netcoreapp2.0\FluentAssertions.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

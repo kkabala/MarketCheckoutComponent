@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.WebApi.Tests", "Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.CheckoutComponent.Tests", "Tests\Market.CheckoutComponent.Tests\Market.CheckoutComponent.Tests.csproj", "{BFDE06D0-C979-4357-A188-E100916B2A69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market.WebApi.IntegrationTests", "Market.WebApi.IntegrationTests\Market.WebApi.IntegrationTests.csproj", "{BA7C3671-F356-4194-9DCD-9902B1011976}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.WebApi.IntegrationTests", "Tests\Market.WebApi.IntegrationTests\Market.WebApi.IntegrationTests.csproj", "{8C77DF5A-4C70-4723-BC05-1FDD16E5196B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,10 @@ Global
 		{BFDE06D0-C979-4357-A188-E100916B2A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFDE06D0-C979-4357-A188-E100916B2A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFDE06D0-C979-4357-A188-E100916B2A69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA7C3671-F356-4194-9DCD-9902B1011976}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA7C3671-F356-4194-9DCD-9902B1011976}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA7C3671-F356-4194-9DCD-9902B1011976}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA7C3671-F356-4194-9DCD-9902B1011976}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C77DF5A-4C70-4723-BC05-1FDD16E5196B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C77DF5A-4C70-4723-BC05-1FDD16E5196B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C77DF5A-4C70-4723-BC05-1FDD16E5196B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C77DF5A-4C70-4723-BC05-1FDD16E5196B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,7 +48,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{748B2853-09F7-4878-80A9-BA526ACF3E6C} = {5A2FA95A-FE3F-4B45-9C7C-1D746AF36AA3}
 		{BFDE06D0-C979-4357-A188-E100916B2A69} = {5A2FA95A-FE3F-4B45-9C7C-1D746AF36AA3}
-		{BA7C3671-F356-4194-9DCD-9902B1011976} = {5A2FA95A-FE3F-4B45-9C7C-1D746AF36AA3}
+		{8C77DF5A-4C70-4723-BC05-1FDD16E5196B} = {5A2FA95A-FE3F-4B45-9C7C-1D746AF36AA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8C0E033-639E-4EBF-8176-17EE54171490}

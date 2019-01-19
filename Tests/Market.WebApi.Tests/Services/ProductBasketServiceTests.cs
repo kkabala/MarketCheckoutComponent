@@ -14,7 +14,7 @@ namespace Market.WebApi.Tests.Services
 		{
 			//Arrange
 			var salesHistoryMock = new Mock<ISalesHistoryService>();
-			var service = new ProductBasketProviderService(salesHistoryMock.Object, null);
+			var service = new ProductBasketService(salesHistoryMock.Object, null);
 
 			//Act
 			var instance1 = service.GetCurrent();
@@ -32,7 +32,7 @@ namespace Market.WebApi.Tests.Services
 		{
 			//Arrange
 			var salesHistoryMock = new Mock<ISalesHistoryService>();
-			var service = new ProductBasketProviderService(salesHistoryMock.Object, null);
+			var service = new ProductBasketService(salesHistoryMock.Object, null);
 
 			//Act
 			var instance1 = service.GetCurrent();

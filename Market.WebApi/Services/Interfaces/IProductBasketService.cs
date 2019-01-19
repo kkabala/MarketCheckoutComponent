@@ -2,7 +2,7 @@
 
 namespace Market.WebApi.Services.Interfaces
 {
-	public interface IProductBasketProviderService
+	public interface IProductBasketService
 	{
 		IProductsBasket GetCurrent();
 		void Reset();

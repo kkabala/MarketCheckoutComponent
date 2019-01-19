@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Market.WebApi.Controllers;
+using Market.WebApi.Services;
+using Market.WebApi.Services.Interfaces;
 
 namespace Market.WebApi.IntegrationTests
 {
@@ -107,5 +110,26 @@ namespace Market.WebApi.IntegrationTests
 			var billText = await checkoutResponse.Content.ReadAsStringAsync();
 			billText.Should().NotContain($" {ProductName} ");
 		}
+
+		[Test]
+		public async Task Checkout_CantBeExecutedTwiceForTheSameBasket()
+		{
+			//Arrange
+
+			//Act
+			await client.PostAsync(AddAProductAddress, null);
+
+			var checkoutResponse1 = await client.GetAsync(CheckoutAddress);
+			checkoutResponse1.EnsureSuccessStatusCode();
+			var billText1 = await checkoutResponse1.Content.ReadAsStringAsync();
+
+			var checkoutResponse2 = await client.GetAsync(CheckoutAddress);
+			checkoutResponse2.EnsureSuccessStatusCode();
+			var billText2 = await checkoutResponse2.Content.ReadAsStringAsync();
+
+			//Assert
+			billText1.Should().NotBe(billText2);
+		}
+
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Model;
@@ -16,6 +17,9 @@ namespace Market.CheckoutComponent
 		public ProductsBasket(ISalesHistoryService salesHistoryService,
 			IDiscountRulesProviderService discountRulesProviderService)
 		{
+			if (salesHistoryService==null)
+				throw new ArgumentNullException("ISalesHistoryService is required and cannot be null");
+
 			this.salesHistoryService = salesHistoryService;
 			this.discountRulesProviderService = discountRulesProviderService;
 			products = new List<IProduct>();

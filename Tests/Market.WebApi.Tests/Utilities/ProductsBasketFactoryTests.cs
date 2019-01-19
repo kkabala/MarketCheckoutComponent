@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using Market.CheckoutComponent;
+using Market.CheckoutComponent.Services.Interfaces;
 using Market.WebApi.Utilities;
+using Moq;
 using NUnit.Framework;
 
 namespace Market.WebApi.Tests.Utilities
@@ -12,7 +14,8 @@ namespace Market.WebApi.Tests.Utilities
 		public void Create_ReturnsNewInstanceOfBasket()
 		{
 			//Arrange
-			var factory = new ProductsBasketFactory(null, null);
+			var salesHistoryMock = new Mock<ISalesHistoryService>();
+			var factory = new ProductsBasketFactory(salesHistoryMock.Object, null);
 
 			//Act
 			var basket1 = factory.Create();

@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
+using Market.CheckoutComponent.Services.Interfaces;
 using Market.WebApi.Services;
+using Moq;
 using NUnit.Framework;
 
 namespace Market.WebApi.Tests.Services
@@ -11,7 +13,8 @@ namespace Market.WebApi.Tests.Services
 		public void GetCurrent_ReturnsTheSameInstanceEveryTime()
 		{
 			//Arrange
-			var service = new ProductBasketProviderService(null, null);
+			var salesHistoryMock = new Mock<ISalesHistoryService>();
+			var service = new ProductBasketProviderService(salesHistoryMock.Object, null);
 
 			//Act
 			var instance1 = service.GetCurrent();
@@ -28,7 +31,8 @@ namespace Market.WebApi.Tests.Services
 		public void Reset_ForcesCreatingNewBasketInsance_WhenGetCurrentIsCalled()
 		{
 			//Arrange
-			var service = new ProductBasketProviderService(null, null);
+			var salesHistoryMock = new Mock<ISalesHistoryService>();
+			var service = new ProductBasketProviderService(salesHistoryMock.Object, null);
 
 			//Act
 			var instance1 = service.GetCurrent();

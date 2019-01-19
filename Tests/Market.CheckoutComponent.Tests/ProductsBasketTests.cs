@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using FluentAssertions;
 using Market.CheckoutComponent.Model;
@@ -16,6 +17,19 @@ namespace Market.CheckoutComponent.Tests
 		public void SetUp()
 		{
 			productsGenerator = new ProductsMockObjectsGenerator();
+		}
+
+		[Test]
+		public void ArgumentExceptionIsThrown_WhenNoSalesHistoryServiceIsPassedToTheConstructor()
+		{
+			//Arrange
+			var discountRulesService = new Mock<IDiscountRulesProviderService>();
+
+			//Act
+			Action constructorAction = () => new ProductsBasket(null, discountRulesService.Object);
+
+			//Assert
+			constructorAction.Should().Throw<ArgumentNullException>();
 		}
 
 		[TestCase(0)]

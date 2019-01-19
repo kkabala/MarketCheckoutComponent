@@ -17,10 +17,7 @@ namespace Market.CheckoutComponent
 		public ProductsBasket(ISalesHistoryService salesHistoryService,
 			IDiscountRulesService discountRulesService)
 		{
-			if (salesHistoryService==null)
-				throw new ArgumentNullException("ISalesHistoryService is required and cannot be null");
-
-			this.salesHistoryService = salesHistoryService;
+			this.salesHistoryService = salesHistoryService ?? throw new ArgumentNullException($"{nameof(salesHistoryService)}");
 			this.discountRulesService = discountRulesService;
 			products = new List<IProduct>();
 		}

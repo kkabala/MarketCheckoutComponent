@@ -1,0 +1,9 @@
+Z
+QD:\Projects\MarketCheckoutComponent\Market.WebApi\Controllers\BasketController.csutf-8E
+<D:\Projects\MarketCheckoutComponent\Market.WebApi\Program.csutf-8b
+YD:\Projects\MarketCheckoutComponent\Market.WebApi\Services\InMemorySalesHistoryService.csutf-8^
+UD:\Projects\MarketCheckoutComponent\Market.WebApi\Services\Interfaces\IDataService.csutf-8X
+OD:\Projects\MarketCheckoutComponent\Market.WebApi\Services\SampleDataService.csutf-8E
+<D:\Projects\MarketCheckoutComponent\Market.WebApi\Startup.csutf-8i
+`D:\Projects\MarketCheckoutComponent\Market.WebApi\Utilities\Interfaces\IProductsBasketFactory.csutf-8]
+TD:\Projects\MarketCheckoutComponent\Market.WebApi\Utilities\ProductsBasketFactory.csutf-8

@@ -10,7 +10,10 @@ namespace Market.CheckoutComponent.Model.DiscountRules
 		private readonly int itemsRequiredToApplyDiscount;
 		private readonly decimal specialGroupPrice;
 
-		public BulkDiscountRule(string name, string productName, int itemsRequiredToApplyDiscount, decimal specialGroupPrice)
+		public BulkDiscountRule(string name, 
+			string productName, 
+			int itemsRequiredToApplyDiscount, 
+			decimal specialGroupPrice)
 		{
 			Name = name;
 			this.productName = productName;

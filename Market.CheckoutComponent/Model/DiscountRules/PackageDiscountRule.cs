@@ -10,7 +10,9 @@ namespace Market.CheckoutComponent.Model.DiscountRules
 		private readonly decimal discountAmount;
 		private readonly string[] packageProductNames;
 
-		public PackageDiscountRule(string name, decimal discountAmount, params string[] packageProductNames)
+		public PackageDiscountRule(string name, 
+			decimal discountAmount, 
+			params string[] packageProductNames)
 		{
 			Name = name;
 			this.discountAmount = discountAmount;

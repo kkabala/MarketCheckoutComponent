@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace Market.WebApi.Tests.Services
 {
 	[TestFixture]
-	public class BasketProviderServiceTests
+	public class ProductBasketServiceTests
 	{
 		[Test]
 		public void GetCurrent_ReturnsTheSameInstanceEveryTime()

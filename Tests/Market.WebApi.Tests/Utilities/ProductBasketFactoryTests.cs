@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Market.WebApi.Tests.Utilities
 {
 	[TestFixture]
-	public class ProductsBasketFactoryTests
+	public class ProductBasketFactoryTests
 	{
 		[Test]
 		public void Create_ReturnsNewInstanceOfBasket()

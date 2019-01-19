@@ -8,7 +8,7 @@ using Market.WebApi.Services.Interfaces;
 
 namespace Market.WebApi.Services
 {
-	public class SampleDataService : IDataService, IDiscountRulesProviderService
+	public class SampleDataService : IDataService, IDiscountRulesService
 	{
 		private readonly List<IProduct> products = new List<IProduct>()
 		{

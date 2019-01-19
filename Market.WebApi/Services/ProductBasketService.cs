@@ -5,22 +5,22 @@ using Market.WebApi.Services.Interfaces;
 
 namespace Market.WebApi.Services
 {
-	public class ProductBasketProviderService : IProductBasketProviderService
+	public class ProductBasketService : IProductBasketService
 	{
 		private readonly ISalesHistoryService salesHistoryService;
-		private readonly IDiscountRulesProviderService discountRulesProviderService;
+		private readonly IDiscountRulesService discountRulesService;
 
 		private ProductsBasket current;
 
-		public ProductBasketProviderService(ISalesHistoryService salesHistoryService, IDiscountRulesProviderService discountRulesProviderService)
+		public ProductBasketService(ISalesHistoryService salesHistoryService, IDiscountRulesService discountRulesService)
 		{
 			this.salesHistoryService = salesHistoryService;
-			this.discountRulesProviderService = discountRulesProviderService;
+			this.discountRulesService = discountRulesService;
 		}
 
 		public IProductsBasket GetCurrent()
 		{
-			return current ?? (current = new ProductsBasket(salesHistoryService, discountRulesProviderService));
+			return current ?? (current = new ProductsBasket(salesHistoryService, discountRulesService));
 		}
 
 		public void Reset()

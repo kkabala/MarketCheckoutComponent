@@ -8,17 +8,17 @@ namespace Market.WebApi.Utilities
 	public class ProductsBasketFactory : IProductsBasketFactory
 	{
 		private readonly ISalesHistoryService salesHistoryService;
-		private readonly IDiscountRulesProviderService discountRulesProviderService;
+		private readonly IDiscountRulesService discountRulesService;
 
 		public ProductsBasketFactory(ISalesHistoryService salesHistoryService,
-			IDiscountRulesProviderService discountRulesProviderService)
+			IDiscountRulesService discountRulesService)
 		{
 			this.salesHistoryService = salesHistoryService;
-			this.discountRulesProviderService = discountRulesProviderService;
+			this.discountRulesService = discountRulesService;
 		}
 		public IProductsBasket Create()
 		{
-			return new ProductsBasket(salesHistoryService, discountRulesProviderService);
+			return new ProductsBasket(salesHistoryService, discountRulesService);
 		}
 	}
 }

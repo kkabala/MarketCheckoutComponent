@@ -10,22 +10,22 @@ namespace Market.WebApi.Controllers
 	{
 		private readonly IProductsBasket productsBasket;
 		private readonly IDataService dataService;
-		private readonly IProductBasketProviderService productBasketProviderService;
+		private readonly IProductBasketService productBasketService;
 
 		public BasketController(IDataService dataService,
-			IProductBasketProviderService productBasketProviderService)
+			IProductBasketService productBasketService)
 		{
 			this.dataService = dataService;
-			this.productBasketProviderService = productBasketProviderService;
+			this.productBasketService = productBasketService;
 
-			productsBasket = productBasketProviderService.GetCurrent();
+			productsBasket = productBasketService.GetCurrent();
 		}
 
 		[HttpGet]
 		public ActionResult<string> Checkout()
 		{
 			var bill = productsBasket.Checkout();
-			productBasketProviderService.Reset();
+			productBasketService.Reset();
 			return bill.ToString();
 		}
 

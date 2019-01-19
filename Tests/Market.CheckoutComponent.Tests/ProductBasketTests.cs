@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace Market.CheckoutComponent.Tests
 {
-	public class ProductsBasketTests
+	public class ProductBasketTests
 	{
 		private ProductsMockObjectsGenerator productsGenerator;
 
@@ -23,7 +23,7 @@ namespace Market.CheckoutComponent.Tests
 		public void ArgumentExceptionIsThrown_WhenNoSalesHistoryServiceIsPassedToTheConstructor()
 		{
 			//Arrange
-			var discountRulesService = new Mock<IDiscountRulesProviderService>();
+			var discountRulesService = new Mock<IDiscountRulesService>();
 
 			//Act
 			Action constructorAction = () => new ProductsBasket(null, discountRulesService.Object);
@@ -286,7 +286,7 @@ namespace Market.CheckoutComponent.Tests
 		public void Checkout_ContainsAllDiscountsFromProvider()
 		{
 			//Arrange
-			var discountsProviderMock = new Mock<IDiscountRulesProviderService>();
+			var discountsProviderMock = new Mock<IDiscountRulesService>();
 			var discountRules = new[]
 			{
 				new Mock<IDiscountRule>().Object,

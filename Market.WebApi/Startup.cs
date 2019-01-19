@@ -35,11 +35,11 @@ namespace Market.WebApi
 
 			services.AddTransient<ISalesHistoryService, InMemorySalesHistoryService>();
 			services.AddTransient<IDataService, SampleDataService>();
-			services.AddTransient<IDiscountRulesProviderService, SampleDataService>();
+			services.AddTransient<IDiscountRulesService, SampleDataService>();
 			services.AddTransient<IProductsBasketFactory, ProductsBasketFactory>();
 
 			//For simplicity the api handles one user at a time
-			services.AddSingleton<IProductBasketProviderService, ProductBasketProviderService>();
+			services.AddSingleton<IProductBasketService, ProductBasketService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

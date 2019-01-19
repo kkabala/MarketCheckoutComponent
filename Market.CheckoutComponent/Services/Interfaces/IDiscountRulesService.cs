@@ -2,7 +2,7 @@
 
 namespace Market.CheckoutComponent.Services.Interfaces
 {
-	public interface IDiscountRulesProviderService
+	public interface IDiscountRulesService
 	{
 		IDiscountRule[] GetAllDiscountRules();
 	}

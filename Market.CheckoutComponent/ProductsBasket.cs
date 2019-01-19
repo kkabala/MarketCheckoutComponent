@@ -12,22 +12,22 @@ namespace Market.CheckoutComponent
 	{
 		private readonly List<IProduct> products;
 		private readonly ISalesHistoryService salesHistoryService;
-		private readonly IDiscountRulesProviderService discountRulesProviderService;
+		private readonly IDiscountRulesService discountRulesService;
 
 		public ProductsBasket(ISalesHistoryService salesHistoryService,
-			IDiscountRulesProviderService discountRulesProviderService)
+			IDiscountRulesService discountRulesService)
 		{
 			if (salesHistoryService==null)
 				throw new ArgumentNullException("ISalesHistoryService is required and cannot be null");
 
 			this.salesHistoryService = salesHistoryService;
-			this.discountRulesProviderService = discountRulesProviderService;
+			this.discountRulesService = discountRulesService;
 			products = new List<IProduct>();
 		}
 
 		public IBill Checkout()
 		{
-			var bill = new Bill(products.ToArray(), discountRulesProviderService?.GetAllDiscountRules());
+			var bill = new Bill(products.ToArray(), discountRulesService?.GetAllDiscountRules());
 			salesHistoryService.Add(bill);
 			return bill;
 		}

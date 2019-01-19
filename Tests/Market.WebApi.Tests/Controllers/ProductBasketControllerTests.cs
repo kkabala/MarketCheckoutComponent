@@ -47,7 +47,7 @@ namespace Market.WebApi.Tests.Controllers
 			var basketMock = new Mock<IProductsBasket>();
 			basketMock.Setup(m => m.Checkout()).Returns(billMock.Object);
 
-			var factoryMock = new Mock<IProductBasketProviderService>();
+			var factoryMock = new Mock<IProductBasketService>();
 			factoryMock.Setup(m => m.GetCurrent()).Returns(basketMock.Object);
 
 			//Act
@@ -68,7 +68,7 @@ namespace Market.WebApi.Tests.Controllers
 			var dataService = new Mock<IDataService>();
 			dataService.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns(product);
 			var saleshistoryServiceMock = new Mock<ISalesHistoryService>();
-			var basketProviderService = new Mock<IProductBasketProviderService>();
+			var basketProviderService = new Mock<IProductBasketService>();
 			basketProviderService.Setup(m => m.Reset());
 			basketProviderService.Setup(m => m.GetCurrent()).Returns(new ProductsBasket(saleshistoryServiceMock.Object,null));
 			var controller = new BasketController(dataService.Object, 
@@ -95,7 +95,7 @@ namespace Market.WebApi.Tests.Controllers
 
 		private const string BillsTestToStringMethodOutput = "Test ToString method output";
 
-		private Mock<IProductBasketProviderService> GetBasketProvider()
+		private Mock<IProductBasketService> GetBasketProvider()
 		{
 			var billMock = new Mock<IBill>();
 			billMock.Setup(m => m.ToString()).Returns(BillsTestToStringMethodOutput);
@@ -103,7 +103,7 @@ namespace Market.WebApi.Tests.Controllers
 			var basketMock = new Mock<IProductsBasket>();
 			basketMock.Setup(m => m.Checkout()).Returns(billMock.Object);
 
-			var mock = new Mock<IProductBasketProviderService>();
+			var mock = new Mock<IProductBasketService>();
 			mock.Setup(m => m.GetCurrent()).Returns(basketMock.Object);
 
 			return mock;

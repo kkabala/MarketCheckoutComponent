@@ -17,6 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Market.CheckoutComponent\Market.CheckoutComponent.csproj" />
+    <ProjectReference Include="..\..\Market.Services\Market.Services.csproj" />
     <ProjectReference Include="..\..\Market.WebApi\Market.WebApi.csproj" />
   </ItemGroup>
 

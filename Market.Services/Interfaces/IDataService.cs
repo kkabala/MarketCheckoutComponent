@@ -1,6 +1,6 @@
 ﻿using Market.CheckoutComponent.Model.Interfaces;
 
-namespace Market.WebApi.Services.Interfaces
+namespace Market.Services.Interfaces
 {
 	public interface IDataService
 	{

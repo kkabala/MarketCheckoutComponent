@@ -1,6 +1,6 @@
 ﻿using Market.CheckoutComponent.Interfaces;
 
-namespace Market.WebApi.Utilities.Interfaces
+namespace Market.Services.Utilities.Interfaces
 {
 	public interface IProductsBasketFactory
 	{

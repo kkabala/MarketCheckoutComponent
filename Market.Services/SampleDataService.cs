@@ -4,9 +4,9 @@ using Market.CheckoutComponent.Model;
 using Market.CheckoutComponent.Model.DiscountRules;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
-using Market.WebApi.Services.Interfaces;
+using Market.Services.Interfaces;
 
-namespace Market.WebApi.Services
+namespace Market.Services
 {
 	public class SampleDataService : IDataService, IDiscountRulesService
 	{

@@ -3,9 +3,8 @@ using Market.CheckoutComponent;
 using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
+using Market.Services.Interfaces;
 using Market.WebApi.Controllers;
-using Market.WebApi.Services.Interfaces;
-using Market.WebApi.Utilities.Interfaces;
 using Moq;
 using NUnit.Framework;
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using Market.CheckoutComponent.Services.Interfaces;
-using Market.WebApi.Services;
-using Market.WebApi.Services.Interfaces;
-using Market.WebApi.Utilities;
-using Market.WebApi.Utilities.Interfaces;
+using Market.Services;
+using Market.Services.Interfaces;
+using Market.Services.Utilities;
+using Market.Services.Utilities.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

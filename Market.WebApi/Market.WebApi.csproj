@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Market.CheckoutComponent\Market.CheckoutComponent.csproj" />
+    <ProjectReference Include="..\Market.Services\Market.Services.csproj" />
   </ItemGroup>
 
 </Project>

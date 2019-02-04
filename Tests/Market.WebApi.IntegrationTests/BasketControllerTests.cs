@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Market.WebApi.Controllers;
-using Market.WebApi.Services;
-using Market.WebApi.Services.Interfaces;
 
 namespace Market.WebApi.IntegrationTests
 {

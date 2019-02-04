@@ -2,7 +2,7 @@
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
 
-namespace Market.WebApi.Services
+namespace Market.Services
 {
 	public class InMemorySalesHistoryService : ISalesHistoryService
 	{

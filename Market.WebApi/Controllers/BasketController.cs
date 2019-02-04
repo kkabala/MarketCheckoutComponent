@@ -1,5 +1,5 @@
 ﻿using Market.CheckoutComponent.Interfaces;
-using Market.WebApi.Services.Interfaces;
+using Market.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Market.WebApi.Controllers

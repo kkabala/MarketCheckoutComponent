@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Market.CheckoutComponent;
 using Market.CheckoutComponent.Services.Interfaces;
-using Market.WebApi.Utilities;
+using Market.Services.Utilities;
 using Moq;
 using NUnit.Framework;
 

@@ -1,10 +1,9 @@
 ﻿using FluentAssertions;
 using Market.CheckoutComponent.Services.Interfaces;
-using Market.WebApi.Services;
 using Moq;
 using NUnit.Framework;
 
-namespace Market.WebApi.Tests.Services
+namespace Market.Services.Tests.Services
 {
 	[TestFixture]
 	public class ProductBasketServiceTests

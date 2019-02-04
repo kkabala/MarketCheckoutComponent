@@ -1,9 +1,9 @@
 ﻿using Market.CheckoutComponent;
 using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
-using Market.WebApi.Utilities.Interfaces;
+using Market.Services.Utilities.Interfaces;
 
-namespace Market.WebApi.Utilities
+namespace Market.Services.Utilities
 {
 	public class ProductsBasketFactory : IProductsBasketFactory
 	{

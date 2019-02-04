@@ -13,12 +13,15 @@ namespace Market.CheckoutComponent
 		private readonly List<IProduct> products;
 		private readonly ISalesHistoryService salesHistoryService;
 		private readonly IDiscountRulesService discountRulesService;
+		private readonly IProductDataService productDataService;
 
 		public ProductsBasket(ISalesHistoryService salesHistoryService,
-			IDiscountRulesService discountRulesService)
+			IDiscountRulesService discountRulesService,
+			IProductDataService productDataService)
 		{
 			this.salesHistoryService = salesHistoryService ?? throw new ArgumentNullException($"{nameof(salesHistoryService)}");
 			this.discountRulesService = discountRulesService;
+			this.productDataService = productDataService ?? throw new ArgumentNullException($"{nameof(productDataService)}");
 			products = new List<IProduct>();
 		}
 
@@ -29,13 +32,14 @@ namespace Market.CheckoutComponent
 			return bill;
 		}
 
-		public void Add(IProduct product)
+		public void Add(string productName)
 		{
+			IProduct product = productDataService.GetProductByName(productName);
 			if (product!= null)
 				products.Add(product);
 		}
 
-		public IProduct[] GetAll()
+		public IProduct[] GetAllAdded()
 		{
 			return products.ToArray();
 		}

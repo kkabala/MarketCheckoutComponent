@@ -1,4 +1,5 @@
 ﻿using System;
+using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
 using Market.Services;
 using Market.Services.Interfaces;
@@ -34,8 +35,8 @@ namespace Market.WebApi
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
 			services.AddTransient<ISalesHistoryService, InMemorySalesHistoryService>();
-			services.AddTransient<IDataService, SampleDataService>();
-			services.AddTransient<IDiscountRulesService, SampleDataService>();
+			services.AddTransient<IProductDataService, SampleProductDataService>();
+			services.AddTransient<IDiscountRulesService, SampleProductDataService>();
 			services.AddTransient<IProductsBasketFactory, ProductsBasketFactory>();
 
 			//For simplicity the api handles one user at a time

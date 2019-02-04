@@ -18,7 +18,7 @@ namespace Market.WebApi.Tests.Controllers
 		{
 			//Arrange
 			var product = GetMockedProduct("A", 50);
-			var dataService = new Mock<IDataService>();
+			var dataService = new Mock<IProductDataService>();
 			dataService.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns(product);
 			var controller = new BasketController(dataService.Object, GetBasketProvider().Object);
 
@@ -37,7 +37,7 @@ namespace Market.WebApi.Tests.Controllers
 		{
 			//Arrange
 			var product = GetMockedProduct("A", 50);
-			var dataService = new Mock<IDataService>();
+			var dataService = new Mock<IProductDataService>();
 			dataService.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns(product);
 
 			var billMock = new Mock<IBill>();
@@ -64,13 +64,14 @@ namespace Market.WebApi.Tests.Controllers
 		{
 			//Arrange
 			var product = GetMockedProduct("A", 50);
-			var dataService = new Mock<IDataService>();
+			var dataService = new Mock<IProductDataService>();
 			dataService.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns(product);
 			var saleshistoryServiceMock = new Mock<ISalesHistoryService>();
+			var dataServiceMock = new Mock<IProductDataService>();
 			var basketProviderService = new Mock<IProductBasketService>();
 			basketProviderService.Setup(m => m.Reset());
-			basketProviderService.Setup(m => m.GetCurrent()).Returns(new ProductsBasket(saleshistoryServiceMock.Object,null));
-			var controller = new BasketController(dataService.Object, 
+			basketProviderService.Setup(m => m.GetCurrent()).Returns(new ProductsBasket(saleshistoryServiceMock.Object, null, dataServiceMock.Object));
+			var controller = new BasketController(dataService.Object,
 				basketProviderService.Object);
 
 			//Act
@@ -81,7 +82,7 @@ namespace Market.WebApi.Tests.Controllers
 			}
 
 			//Assert
-			basketProviderService.Verify(m=> m.Reset(),Times.Exactly(numberOfTimesThatCheckoutIsExecuted));
+			basketProviderService.Verify(m => m.Reset(), Times.Exactly(numberOfTimesThatCheckoutIsExecuted));
 		}
 
 		private IProduct GetMockedProduct(string name, decimal price)

@@ -5,8 +5,8 @@ namespace Market.CheckoutComponent.Interfaces
 	public interface IProductsBasket
 	{
 		IBill Checkout();
-		void Add(IProduct product);
-		IProduct[] GetAll();
+		void Add(string productName);
+		IProduct[] GetAllAdded();
 		void Remove(string productsName);
 		void DecreaseUnits(string particularProductName);
 	}

@@ -1,15 +1,16 @@
-using System;
-using System.Linq;
 using FluentAssertions;
+using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Model;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
 using Moq;
 using NUnit.Framework;
+using System;
+using System.Linq;
 
 namespace Market.CheckoutComponent.Tests
 {
-	public class ProductBasketTests
+	public class ProductsBasketTests
 	{
 		private ProductsMockObjectsGenerator productsGenerator;
 
@@ -26,7 +27,21 @@ namespace Market.CheckoutComponent.Tests
 			var discountRulesService = new Mock<IDiscountRulesService>();
 
 			//Act
-			Action constructorAction = () => new ProductsBasket(null, discountRulesService.Object);
+			Action constructorAction = () => new ProductsBasket(null, discountRulesService.Object, null);
+
+			//Assert
+			constructorAction.Should().Throw<ArgumentNullException>();
+		}
+
+		[Test]
+		public void ArgumentExceptionIsThrown_WhenNoDataServiceIsPassedToTheConstructor()
+		{
+			//Arrange
+			var discountRulesService = new Mock<IDiscountRulesService>().Object;
+			var salesHistoryProvider = new Mock<ISalesHistoryService>().Object;
+
+			//Act
+			Action constructorAction = () => new ProductsBasket(salesHistoryProvider, discountRulesService, null);
 
 			//Assert
 			constructorAction.Should().Throw<ArgumentNullException>();
@@ -40,30 +55,45 @@ namespace Market.CheckoutComponent.Tests
 		public void Add_AddsNewEntryToTheBasket(int numberOfProducts)
 		{
 			//Arrange
-			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object, null);
+			var productsBasket = GetProductBasketWithMockedDataService();
 
 			//Act
 			for (int i = 0; i < numberOfProducts; i++)
 			{
-				productsBasket.Add(productsGenerator.Generate());
+				productsBasket.Add(productsGenerator.Generate().Name);
 			}
 
-			var products = productsBasket.GetAll();
+			var products = productsBasket.GetAllAdded();
 
 			//Assert
 			products.Should().NotBeNull();
 			products.Length.Should().Be(numberOfProducts);
 		}
 
+		private IProductDataService GenerateMockedDataService()
+		{
+			var mock = new Mock<IProductDataService>();
+			mock.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns<string>((m) =>
+			{
+				var productMock = new Mock<IProduct>();
+				productMock.Setup(k => k.Name).Returns(m);
+				var random = new Random();
+				productMock.Setup(k => k.Price).Returns(random.Next(1, 1000));
+				return productMock.Object;
+			});
+
+			return mock.Object;
+		}
+
 		[Test]
 		public void Add_DoesNotAddAnyItemsWhenNullIsPassed()
 		{
 			//Arrange
-			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object,null);
+			var productsBasket = GetProductBasketWithNoSetup();
 
 			//Act
 			productsBasket.Add(null);
-			var products = productsBasket.GetAll();
+			var products = productsBasket.GetAllAdded();
 
 			//Assert
 			products.Should().NotBeNull();
@@ -74,7 +104,7 @@ namespace Market.CheckoutComponent.Tests
 		public void Checkout_ReturnsBill()
 		{
 			//Arrange
-			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object,null);
+			var productsBasket = GetProductBasketWithNoSetup();
 
 			//Act
 			var bill = productsBasket.Checkout();
@@ -88,7 +118,7 @@ namespace Market.CheckoutComponent.Tests
 		{
 			//Arrange
 			var salesHistoryServiceMock = GetSalesHistoryServiceMockWithActions();
-			var productsBasket = new ProductsBasket(salesHistoryServiceMock.Object,null);
+			var productsBasket = new ProductsBasket(salesHistoryServiceMock.Object, null, GetDataServiceWithNoSetup());
 
 			//Act
 			var bill = productsBasket.Checkout();
@@ -98,9 +128,24 @@ namespace Market.CheckoutComponent.Tests
 			bill.Should().NotBeNull();
 		}
 
-		private Mock<ISalesHistoryService> GetSalesHistoryServiceMockWithNoSetup()
+		private ISalesHistoryService GetSalesHistoryServiceWithNoSetup()
 		{
-			return new Mock<ISalesHistoryService>();
+			return new Mock<ISalesHistoryService>().Object;
+		}
+
+		private IProductDataService GetDataServiceWithNoSetup()
+		{
+			return new Mock<IProductDataService>().Object;
+		}
+
+		private ProductsBasket GetProductBasketWithNoSetup()
+		{
+			return new ProductsBasket(GetSalesHistoryServiceWithNoSetup(), null, GetDataServiceWithNoSetup());
+		}
+
+		private ProductsBasket GetProductBasketWithMockedDataService()
+		{
+			return new ProductsBasket(GetSalesHistoryServiceWithNoSetup(), null, GenerateMockedDataService());
 		}
 
 		private Mock<ISalesHistoryService> GetSalesHistoryServiceMockWithActions()
@@ -116,11 +161,12 @@ namespace Market.CheckoutComponent.Tests
 			//Arrange
 			var products = new[]
 			{
-				productsGenerator.Generate("testB", 1),
-				productsGenerator.Generate("SampleProduct", 4),
-				productsGenerator.Generate("aabbcc", 10)
+				"testB",
+				"SampleProduct",
+				"aabbcc"
 			};
-			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object,null);
+
+			var productsBasket = GetProductBasketWithMockedDataService();
 
 			//Act
 			foreach (var singleProduct in products)
@@ -128,21 +174,20 @@ namespace Market.CheckoutComponent.Tests
 				productsBasket.Add(singleProduct);
 			}
 
-			var addedProducts = productsBasket.GetAll();
+			var addedProducts = productsBasket.GetAllAdded();
 
 			//Assert
 			addedProducts.Length.Should().Be(products.Length);
-			addedProducts.Should().Contain(products);
 		}
 
 		[Test]
 		public void GetAll_ReturnsEmptyArray_WhenNoProductsWereAdded()
 		{
 			//Arrange
-			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object,null);
+			var productsBasket = GetProductBasketWithNoSetup();
 
 			//Act
-			var addedProducts = productsBasket.GetAll();
+			var addedProducts = productsBasket.GetAllAdded();
 
 			//Assert
 			addedProducts.Length.Should().Be(0);
@@ -155,11 +200,11 @@ namespace Market.CheckoutComponent.Tests
 			string particularProductName = "ProductA";
 			var products = new[]
 			{
-				productsGenerator.Generate("testB", 1),
-				productsGenerator.Generate(particularProductName, 4),
-				productsGenerator.Generate("aabbcc", 10)
+				"testB",
+				particularProductName,
+				"aabbcc"
 			};
-			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object,null);
+			var productsBasket = GetProductBasketWithMockedDataService();
 
 			//Act
 			foreach (var singleProduct in products)
@@ -168,7 +213,7 @@ namespace Market.CheckoutComponent.Tests
 			}
 
 			productsBasket.Remove(particularProductName);
-			var addedProducts = productsBasket.GetAll();
+			var addedProducts = productsBasket.GetAllAdded();
 
 			//Assert
 			addedProducts.Length.Should().Be(products.Length - 1);
@@ -182,12 +227,12 @@ namespace Market.CheckoutComponent.Tests
 			string particularProductName = "ProductA";
 			var products = new[]
 			{
-				productsGenerator.Generate("testB", 1),
-				productsGenerator.Generate(particularProductName, 4),
-				productsGenerator.Generate(particularProductName, 4),
-				productsGenerator.Generate("aabbcc", 10)
+				"testB",
+				particularProductName,
+				particularProductName,
+				"aabbcc",
 			};
-			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object,null);
+			var productsBasket = GetProductBasketWithMockedDataService();
 
 			//Act
 			foreach (var singleProduct in products)
@@ -196,21 +241,26 @@ namespace Market.CheckoutComponent.Tests
 			}
 
 			productsBasket.Remove(particularProductName);
-			var addedProducts = productsBasket.GetAll();
+			var addedProducts = productsBasket.GetAllAdded();
 
 			//Assert
-			addedProducts.Length.Should().Be(products.Length - products.Count(m=>m.Name==particularProductName));
+			addedProducts.Length.Should().Be(products.Length - products.Count(m => m == particularProductName));
 			addedProducts.Should().NotContain(particularProductName);
 		}
 
 		[TestCase("ProductA")]
 		[TestCase("")]
 		[TestCase(null)]
-		public void Remove_DoesNotRemoveAnything_WhenProductWereNotAddedPreviously(string particularProductName)
+		public void Remove_DoesNotRemoveAnything_WhenNoProductsWereAddedPreviously(string particularProductName)
 		{
 			//Arrange
-			var products = new[] { productsGenerator.Generate("testB", 1), productsGenerator.Generate("aabbcc", 10) };
-			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object,null);
+			var products = new[]
+			{
+				"testB",
+				"aabbcc"
+			};
+
+			var productsBasket = GetProductBasketWithMockedDataService();
 
 			//Act
 			foreach (var singleProduct in products)
@@ -219,7 +269,7 @@ namespace Market.CheckoutComponent.Tests
 			}
 
 			productsBasket.Remove(particularProductName);
-			var addedProducts = productsBasket.GetAll();
+			var addedProducts = productsBasket.GetAllAdded();
 
 			//Assert
 			addedProducts.Length.Should().Be(products.Length);
@@ -233,16 +283,16 @@ namespace Market.CheckoutComponent.Tests
 			string particularProductName = "ProductA";
 			var products = new[]
 			{
-				productsGenerator.Generate("testB", 1),
-				productsGenerator.Generate(particularProductName, 4),
-				productsGenerator.Generate(particularProductName, 4),
-				productsGenerator.Generate(particularProductName, 4),
-				productsGenerator.Generate(particularProductName, 4),
-				productsGenerator.Generate(particularProductName, 4),
-				productsGenerator.Generate("aabbcc", 10)
+				"testB", 
+				particularProductName,
+				particularProductName,
+				particularProductName,
+				particularProductName,
+				particularProductName,
+				"aabbcc"
 			};
-			var particularProductsUnits = products.Count(m => m.Name == particularProductName);
-			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object,null);
+			var particularProductsUnits = products.Count(m => m == particularProductName);
+			var productsBasket = GetProductBasketWithMockedDataService();
 
 			//Act
 			foreach (var singleProduct in products)
@@ -251,11 +301,11 @@ namespace Market.CheckoutComponent.Tests
 			}
 
 			productsBasket.DecreaseUnits(particularProductName);
-			var addedProducts = productsBasket.GetAll();
+			var addedProducts = productsBasket.GetAllAdded();
 
 			//Assert
 			addedProducts.Length.Should().Be(products.Length - 1);
-			addedProducts.Count(m => m.Name == particularProductName).Should().Be(particularProductsUnits-1);
+			addedProducts.Count(m => m.Name == particularProductName).Should().Be(particularProductsUnits - 1);
 		}
 
 
@@ -265,8 +315,12 @@ namespace Market.CheckoutComponent.Tests
 		public void DecreaseUnits_DoesNotRemoveAnything_WhenNoProductWithNameProvidedIsAdded(string particularProductName)
 		{
 			//Arrange
-			var products = new[] { productsGenerator.Generate("testB", 1), productsGenerator.Generate("aabbcc", 10) };
-			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object,null);
+			var products = new[]
+			{
+				"testB",
+				"aabbcc"
+			};
+			var productsBasket = GetProductBasketWithMockedDataService();
 
 			//Act
 			foreach (var singleProduct in products)
@@ -275,7 +329,7 @@ namespace Market.CheckoutComponent.Tests
 			}
 
 			productsBasket.DecreaseUnits(particularProductName);
-			var addedProducts = productsBasket.GetAll();
+			var addedProducts = productsBasket.GetAllAdded();
 
 			//Assert
 			addedProducts.Length.Should().Be(products.Length);
@@ -295,7 +349,7 @@ namespace Market.CheckoutComponent.Tests
 			};
 
 			discountsProviderMock.Setup(m => m.GetAllDiscountRules()).Returns(discountRules);
-			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object,discountsProviderMock.Object);
+			var productsBasket = new ProductsBasket(GetSalesHistoryServiceWithNoSetup(), discountsProviderMock.Object, GetDataServiceWithNoSetup());
 
 			//Act
 			var bill = productsBasket.Checkout();
@@ -309,7 +363,7 @@ namespace Market.CheckoutComponent.Tests
 		{
 			//Arrange
 
-			var productsBasket = new ProductsBasket(GetSalesHistoryServiceMockWithNoSetup().Object, null);
+			var productsBasket = GetProductBasketWithNoSetup();
 
 			//Act
 			var bill = productsBasket.Checkout();

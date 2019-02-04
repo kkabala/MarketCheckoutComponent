@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Model;
 using Market.CheckoutComponent.Model.DiscountRules;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
-using Market.Services.Interfaces;
 
 namespace Market.Services
 {
-	public class SampleDataService : IDataService, IDiscountRulesService
+	public class SampleProductDataService : IProductDataService, IDiscountRulesService
 	{
 		private readonly List<IProduct> products = new List<IProduct>()
 		{

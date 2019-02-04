@@ -1,5 +1,8 @@
 ﻿using FluentAssertions;
+using Market.CheckoutComponent;
+using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
+using Market.Services.Utilities.Interfaces;
 using Moq;
 using NUnit.Framework;
 
@@ -12,8 +15,8 @@ namespace Market.Services.Tests.Services
 		public void GetCurrent_ReturnsTheSameInstanceEveryTime()
 		{
 			//Arrange
-			var salesHistoryMock = new Mock<ISalesHistoryService>();
-			var service = new ProductBasketService(salesHistoryMock.Object, null);
+			var productsBasketFactoryMock = GetDefaultFactory();
+			var service = new ProductBasketService(productsBasketFactoryMock);
 
 			//Act
 			var instance1 = service.GetCurrent();
@@ -26,12 +29,25 @@ namespace Market.Services.Tests.Services
 			instance3.GetHashCode().Should().Be(instance1.GetHashCode());
 		}
 
+		private IProductsBasketFactory GetDefaultFactory()
+		{
+			var productsBasketFactoryMock = new Mock<IProductsBasketFactory>();
+			productsBasketFactoryMock.Setup(m => m.Create()).Returns(() =>
+			{
+				var salesHistory = new Mock<ISalesHistoryService>().Object;
+				var dataServiceMock = new Mock<IProductDataService>().Object;
+				return new ProductsBasket(salesHistory, null, dataServiceMock);
+			});
+
+			return productsBasketFactoryMock.Object;
+		}
+
 		[Test]
 		public void Reset_ForcesCreatingNewBasketInsance_WhenGetCurrentIsCalled()
 		{
 			//Arrange
-			var salesHistoryMock = new Mock<ISalesHistoryService>();
-			var service = new ProductBasketService(salesHistoryMock.Object, null);
+			var productsBasketFactoryMock = GetDefaultFactory();
+			var service = new ProductBasketService(productsBasketFactoryMock);
 
 			//Act
 			var instance1 = service.GetCurrent();

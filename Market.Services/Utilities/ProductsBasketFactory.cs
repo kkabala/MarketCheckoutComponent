@@ -9,16 +9,20 @@ namespace Market.Services.Utilities
 	{
 		private readonly ISalesHistoryService salesHistoryService;
 		private readonly IDiscountRulesService discountRulesService;
+		private readonly IProductDataService productDataService;
 
 		public ProductsBasketFactory(ISalesHistoryService salesHistoryService,
-			IDiscountRulesService discountRulesService)
+			IDiscountRulesService discountRulesService,
+			IProductDataService productDataService)
 		{
 			this.salesHistoryService = salesHistoryService;
 			this.discountRulesService = discountRulesService;
+			this.productDataService = productDataService;
 		}
+
 		public IProductsBasket Create()
 		{
-			return new ProductsBasket(salesHistoryService, discountRulesService);
+			return new ProductsBasket(salesHistoryService, discountRulesService, productDataService);
 		}
 	}
 }

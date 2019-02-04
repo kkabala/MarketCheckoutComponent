@@ -9,13 +9,13 @@ namespace Market.WebApi.Controllers
 	public class BasketController : ControllerBase
 	{
 		private readonly IProductsBasket productsBasket;
-		private readonly IDataService dataService;
+		private readonly IProductDataService productDataService;
 		private readonly IProductBasketService productBasketService;
 
-		public BasketController(IDataService dataService,
+		public BasketController(IProductDataService productDataService,
 			IProductBasketService productBasketService)
 		{
-			this.dataService = dataService;
+			this.productDataService = productDataService;
 			this.productBasketService = productBasketService;
 
 			productsBasket = productBasketService.GetCurrent();
@@ -32,8 +32,7 @@ namespace Market.WebApi.Controllers
 		[HttpPost("{productName}")]
 		public ActionResult AddProduct(string productName)
 		{
-			var product = dataService.GetProductByName(productName);
-			productsBasket.Add(product);
+			productsBasket.Add(productName);
 			return Ok();
 		}
 

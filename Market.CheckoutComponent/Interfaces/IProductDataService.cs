@@ -1,8 +1,8 @@
 ﻿using Market.CheckoutComponent.Model.Interfaces;
 
-namespace Market.Services.Interfaces
+namespace Market.CheckoutComponent.Interfaces
 {
-	public interface IDataService
+	public interface IProductDataService
 	{
 		IProduct GetProductByName(string name);
 	}

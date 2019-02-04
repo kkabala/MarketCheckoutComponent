@@ -1,26 +1,23 @@
-﻿using Market.CheckoutComponent;
-using Market.CheckoutComponent.Interfaces;
-using Market.CheckoutComponent.Services.Interfaces;
+﻿using Market.CheckoutComponent.Interfaces;
 using Market.Services.Interfaces;
+using Market.Services.Utilities.Interfaces;
 
 namespace Market.Services
 {
 	public class ProductBasketService : IProductBasketService
 	{
-		private readonly ISalesHistoryService salesHistoryService;
-		private readonly IDiscountRulesService discountRulesService;
+		private readonly IProductsBasketFactory productsBasketFactory;
 
-		private ProductsBasket current;
+		private IProductsBasket current;
 
-		public ProductBasketService(ISalesHistoryService salesHistoryService, IDiscountRulesService discountRulesService)
+		public ProductBasketService(IProductsBasketFactory productsBasketFactory)
 		{
-			this.salesHistoryService = salesHistoryService;
-			this.discountRulesService = discountRulesService;
+			this.productsBasketFactory = productsBasketFactory;
 		}
 
 		public IProductsBasket GetCurrent()
 		{
-			return current ?? (current = new ProductsBasket(salesHistoryService, discountRulesService));
+			return current ?? (current = productsBasketFactory.Create());
 		}
 
 		public void Reset()

@@ -1,27 +1,24 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Market.CheckoutComponent.Model;
 using Market.CheckoutComponent.Model.Interfaces;
 using Moq;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Market.CheckoutComponent.Tests.Model
 {
 	[TestFixture]
 	public class BillTests
 	{
+		private readonly int discount1Amount = -51;
+		private readonly int discount2Amount = -33;
 		private readonly string[] productNames = { "Test1", "Test2", "Test3" };
 
 		private readonly decimal[] productPrices = { 55m, 29.512m, 68m };
-		private readonly int discount1Amount = -51;
-		private readonly int discount2Amount = -33;
-
-		private IProduct[] products;
-		private IDiscountRule[] discountsRules;
-
 		private readonly int productTestDataCopies = 3;
-
+		private IDiscountRule[] discountsRules;
+		private IProduct[] products;
 		private ProductsMockObjectsGenerator productsGenerator;
 
 		[SetUp]
@@ -37,56 +34,23 @@ namespace Market.CheckoutComponent.Tests.Model
 			discountsRules = null;
 		}
 
-		private void SetUpAllProducts()
-		{
-			var productsList = new List<IProduct>();
-
-			for (int i = 0; i < productTestDataCopies; i++)
-			{
-				productsList.Add(productsGenerator.Generate(productNames[0], productPrices[0]));
-				productsList.Add(productsGenerator.Generate(productNames[1], productPrices[1]));
-				productsList.Add(productsGenerator.Generate(productNames[2], productPrices[2]));
-			};
-
-			products = productsList.ToArray();
-		}
-
-		private void SetUpAllDiscounts()
-		{
-			var discountMock1 = GetDiscountMock("Christmas discount", discount1Amount);
-			var discountMock2 = GetDiscountMock("Sale discount", discount2Amount);
-
-			discountsRules = new[]
-			{
-				discountMock1.Object,
-				discountMock2.Object
-			};
-		}
-
-		private Mock<IDiscountRule> GetDiscountMock(string name, decimal discountAmount)
-		{
-			var discountMock = new Mock<IDiscountRule>();
-
-			discountMock.Setup(m => m.Name).Returns(name);
-			discountMock.Setup(m => m.Calculate(It.IsAny<IProduct[]>())).Returns(discountAmount);
-
-			return discountMock;
-		}
-
 		[Test]
-		public void ToString_ReturnsHeaderWithBillColumnNames()
+		public void ToString_DoesNotReturnInfoAboutTheDiscountIfItsValueIsZero()
 		{
-			var billColumnNames = new[] { "Product", "Price", "Unit", "Amount" };
-			SetUpAllProducts();
-			var bill = new Bill(products, discountsRules);
+			//Arrange
+			SetUpAllDiscounts();
+			var localDiscountRules = discountsRules.ToList();
+			var zeroDiscountRule = GetDiscountMock("Zero discount", 1).Object;
+			localDiscountRules.Add(zeroDiscountRule);
+
+			var bill = new Bill(null, localDiscountRules.ToArray());
 
 			//Act
-			var headerLine = bill.ToString().Split("\n").First();
+			var result = bill.ToString();
 
 			//Assert
-			headerLine.Should().ContainAll(billColumnNames);
+			result.Should().NotContain(zeroDiscountRule.Name);
 		}
-
 
 		[Test]
 		public void ToString_ReturnsEntriesForEachProductType()
@@ -127,11 +91,25 @@ namespace Market.CheckoutComponent.Tests.Model
 				var productPrice = currentProduct.Price;
 				var amount = (productPrice * numberOfProducts).ToString("F2");
 
-				singleBillLine.Should().ContainAll(currentProduct.Name, 
-					productPrice.ToString("F2"), 
-					numberOfProducts.ToString(), 
+				singleBillLine.Should().ContainAll(currentProduct.Name,
+					productPrice.ToString("F2"),
+					numberOfProducts.ToString(),
 					amount);
 			}
+		}
+
+		[Test]
+		public void ToString_ReturnsHeaderWithBillColumnNames()
+		{
+			var billColumnNames = new[] { "Product", "Price", "Unit", "Amount" };
+			SetUpAllProducts();
+			var bill = new Bill(products, discountsRules);
+
+			//Act
+			var headerLine = bill.ToString().Split("\n").First();
+
+			//Assert
+			headerLine.Should().ContainAll(billColumnNames);
 		}
 
 		[Test]
@@ -153,31 +131,12 @@ namespace Market.CheckoutComponent.Tests.Model
 		}
 
 		[Test]
-		public void ToString_DoesNotReturnInfoAboutTheDiscountIfItsValueIsZero()
-		{
-			//Arrange
-			SetUpAllDiscounts();
-			var localDiscountRules = discountsRules.ToList();
-			var zeroDiscountRule = GetDiscountMock("Zero discount", 1).Object;
-			localDiscountRules.Add(zeroDiscountRule);
-
-			var bill = new Bill(null, localDiscountRules.ToArray());
-
-			//Act
-			var result = bill.ToString();
-
-			//Assert
-			result.Should().NotContain(zeroDiscountRule.Name);
-		}
-
-		[Test]
 		public void ToString_ReturnsInfoAboutTotalPrice()
 		{
 			//Arrange
 			SetUpAllProducts();
 			var bill = new Bill(products, null);
 			string totalFooter = "Total: ";
-
 
 			//Act
 			var result = bill.ToString().Split("\n");
@@ -218,6 +177,42 @@ namespace Market.CheckoutComponent.Tests.Model
 
 			//Assert
 			total.Should().Be(productsPricesSum + discountsSum);
+		}
+
+		private Mock<IDiscountRule> GetDiscountMock(string name, decimal discountAmount)
+		{
+			var discountMock = new Mock<IDiscountRule>();
+
+			discountMock.Setup(m => m.Name).Returns(name);
+			discountMock.Setup(m => m.Calculate(It.IsAny<IProduct[]>())).Returns(discountAmount);
+
+			return discountMock;
+		}
+
+		private void SetUpAllDiscounts()
+		{
+			var discountMock1 = GetDiscountMock("Christmas discount", discount1Amount);
+			var discountMock2 = GetDiscountMock("Sale discount", discount2Amount);
+
+			discountsRules = new[]
+			{
+				discountMock1.Object,
+				discountMock2.Object
+			};
+		}
+
+		private void SetUpAllProducts()
+		{
+			var productsList = new List<IProduct>();
+
+			for (int i = 0; i < productTestDataCopies; i++)
+			{
+				productsList.Add(productsGenerator.Generate(productNames[0], productPrices[0]));
+				productsList.Add(productsGenerator.Generate(productNames[1], productPrices[1]));
+				productsList.Add(productsGenerator.Generate(productNames[2], productPrices[2]));
+			};
+
+			products = productsList.ToArray();
 		}
 	}
 }

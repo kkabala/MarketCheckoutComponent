@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Market.CheckoutComponent.Model.DiscountRules;
 using Market.CheckoutComponent.Model.Interfaces;
 using Moq;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Market.CheckoutComponent.Tests.Model.Discounts
 {
@@ -25,7 +25,39 @@ namespace Market.CheckoutComponent.Tests.Model.Discounts
 			var appliedDiscount = packageDiscount.Calculate(productsInTheBasket);
 
 			//Assert
-			appliedDiscount.Should().Be(-(discountPercentage * priceThreshold)/100);
+			appliedDiscount.Should().Be(-(discountPercentage * priceThreshold) / 100);
+		}
+
+		[TestCase("Christmas package discount", 600, 10)]
+		[TestCase("Christmas package discount", 1300, 25)]
+		[TestCase("Christmas package discount", 100, 5)]
+		public void Calculate_ReturnsSingleDiscount_WhenDiscountConditionsAreMetMultipleTimes(string discountName, int priceThreshold, int discountPercentage)
+		{
+			//Arrange
+			var priceThresholdDiscount = new PriceThresholdDiscountRule(discountName, priceThreshold, discountPercentage);
+			var productsInTheBasket = GetProducts(5 * priceThreshold).ToList();
+
+			//Act
+			var appliedDiscount = priceThresholdDiscount.Calculate(productsInTheBasket);
+			var productsSum = productsInTheBasket.Sum(m => m.Price);
+
+			//Assert
+			appliedDiscount.Should().Be(-(discountPercentage * productsSum) / 100);
+		}
+
+		[TestCase("Christmas package discount", 600, 10)]
+		[TestCase("Christmas package discount", 1300, 25)]
+		[TestCase("Christmas package discount", 100, 5)]
+		public void Calculate_ReturnsZeroDiscount_WhenNullProductsListIsPassed(string discountName, int priceThreshold, int discountPercentage)
+		{
+			//Arrange
+			var priceThresholdDiscount = new PriceThresholdDiscountRule(discountName, priceThreshold, discountPercentage);
+
+			//Act
+			var appliedDiscount = priceThresholdDiscount.Calculate(null);
+
+			//Assert
+			appliedDiscount.Should().Be(0);
 		}
 
 		[TestCase("Christmas package discount", 600, 10)]
@@ -35,7 +67,7 @@ namespace Market.CheckoutComponent.Tests.Model.Discounts
 		{
 			//Arrange
 			var packageDiscount = new PriceThresholdDiscountRule(discountName, priceThreshold, discountPercentage);
-			var productsInTheBasket = GetProducts(priceThreshold-1);
+			var productsInTheBasket = GetProducts(priceThreshold - 1);
 
 			//Act
 			var appliedDiscount = packageDiscount.Calculate(productsInTheBasket);
@@ -60,38 +92,6 @@ namespace Market.CheckoutComponent.Tests.Model.Discounts
 			}
 
 			return products;
-		}
-
-		[TestCase("Christmas package discount", 600, 10)]
-		[TestCase("Christmas package discount", 1300, 25)]
-		[TestCase("Christmas package discount", 100, 5)]
-		public void Calculate_ReturnsSingleDiscount_WhenDiscountConditionsAreMetMultipleTimes(string discountName, int priceThreshold, int discountPercentage)
-		{
-			//Arrange
-			var priceThresholdDiscount = new PriceThresholdDiscountRule(discountName, priceThreshold, discountPercentage);
-			var productsInTheBasket = GetProducts(5*priceThreshold).ToList();
-
-			//Act
-			var appliedDiscount = priceThresholdDiscount.Calculate(productsInTheBasket);
-			var productsSum = productsInTheBasket.Sum(m => m.Price);
-
-			//Assert
-			appliedDiscount.Should().Be(-(discountPercentage * productsSum) / 100);
-		}
-
-		[TestCase("Christmas package discount", 600, 10)]
-		[TestCase("Christmas package discount", 1300, 25)]
-		[TestCase("Christmas package discount", 100, 5)]
-		public void Calculate_ReturnsZeroDiscount_WhenNullProductsListIsPassed(string discountName, int priceThreshold, int discountPercentage)
-		{
-			//Arrange
-			var priceThresholdDiscount = new PriceThresholdDiscountRule(discountName, priceThreshold, discountPercentage);
-
-			//Act
-			var appliedDiscount = priceThresholdDiscount.Calculate(null);
-
-			//Assert
-			appliedDiscount.Should().Be(0);
 		}
 	}
 }

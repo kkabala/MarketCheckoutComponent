@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using Market.CheckoutComponent.Model.Interfaces;
+﻿using Market.CheckoutComponent.Model.Interfaces;
+using System.Collections.Generic;
 
 namespace Market.CheckoutComponent.Services.Interfaces
 {
 	public interface ISalesHistoryService
 	{
-		IEnumerable<IBill> GetAll();
 		void Add(IBill bill);
+
+		IEnumerable<IBill> GetAll();
 	}
 }

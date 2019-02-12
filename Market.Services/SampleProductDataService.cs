@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Market.CheckoutComponent.Interfaces;
+﻿using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Model;
 using Market.CheckoutComponent.Model.DiscountRules;
 using Market.CheckoutComponent.Model.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
+using Market.Services.DTOs;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Market.Services
 {
@@ -17,11 +18,6 @@ namespace Market.Services
 			new BasicProduct("C", 30),
 			new BasicProduct("D", 25),
 		};
-
-		public IProduct GetProductByName(string name)
-		{
-			return products.SingleOrDefault(m => m.Name == name);
-		}
 
 		public IDiscountRule[] GetAllDiscountRules()
 		{
@@ -37,6 +33,11 @@ namespace Market.Services
 
 				new PriceThresholdDiscountRule("Sale", 600, 10)
 			};
+		}
+
+		public IProduct GetProductByName(string name)
+		{
+			return products.SingleOrDefault(m => m.Name == name);
 		}
 	}
 }

@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Market.CheckoutComponent.Model.Interfaces;
 using Moq;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Market.Services.Tests.Services
 {
@@ -10,19 +10,17 @@ namespace Market.Services.Tests.Services
 	public class InMemorySalesHistoryServiceTests
 	{
 		[Test]
-		public void GetAll_ReturnsPreviouslyAddedBills()
+		public void Add_CannotAddNulls()
 		{
 			//Arrange
 			var service = new InMemorySalesHistoryService();
-			var bill = GetDefaultTestingBill();
 
 			//Act
-			service.Add(bill);
+			service.Add(null);
 			var allBills = service.GetAll();
 
 			//Assert
-			allBills.Count().Should().Be(1);
-			allBills.Should().Contain(bill);
+			allBills.Count().Should().Be(0);
 		}
 
 		[Test]
@@ -43,17 +41,19 @@ namespace Market.Services.Tests.Services
 		}
 
 		[Test]
-		public void Add_CannotAddNulls()
+		public void GetAll_ReturnsPreviouslyAddedBills()
 		{
 			//Arrange
 			var service = new InMemorySalesHistoryService();
+			var bill = GetDefaultTestingBill();
 
 			//Act
-			service.Add(null);
+			service.Add(bill);
 			var allBills = service.GetAll();
 
 			//Assert
-			allBills.Count().Should().Be(0);
+			allBills.Count().Should().Be(1);
+			allBills.Should().Contain(bill);
 		}
 
 		private IBill GetDefaultTestingBill()

@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Market.CheckoutComponent.Model.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
-using Market.CheckoutComponent.Model.Interfaces;
 
 namespace Market.CheckoutComponent.Model.DiscountRules
 {
 	public class PriceThresholdDiscountRule : IDiscountRule
 	{
-		public string Name { get; }
-		private readonly int priceThreshold;
 		private readonly int discountPercentage;
+		private readonly int priceThreshold;
 
 		public PriceThresholdDiscountRule(string name, int priceThreshold, int discountPercentage)
 		{
@@ -17,12 +16,14 @@ namespace Market.CheckoutComponent.Model.DiscountRules
 			this.discountPercentage = discountPercentage;
 		}
 
+		public string Name { get; }
+
 		public decimal Calculate(IEnumerable<IProduct> products)
 		{
 			var productsSum = products?.Sum(m => m.Price);
 
-			return (productsSum.HasValue && productsSum.Value >= priceThreshold) 
-				? -(discountPercentage * productsSum.Value) / 100 
+			return (productsSum.HasValue && productsSum.Value >= priceThreshold)
+				? -(discountPercentage * productsSum.Value) / 100
 				: 0;
 		}
 	}

@@ -14,39 +14,6 @@ namespace Market.CheckoutComponent.Tests
 	{
 		private ProductsMockObjectsGenerator productsGenerator;
 
-		[SetUp]
-		public void SetUp()
-		{
-			productsGenerator = new ProductsMockObjectsGenerator();
-		}
-
-		[Test]
-		public void ArgumentExceptionIsThrown_WhenNoSalesHistoryServiceIsPassedToTheConstructor()
-		{
-			//Arrange
-			var discountRulesService = new Mock<IDiscountRulesService>();
-
-			//Act
-			Action constructorAction = () => new ProductsBasket(null, discountRulesService.Object, null);
-
-			//Assert
-			constructorAction.Should().Throw<ArgumentNullException>();
-		}
-
-		[Test]
-		public void ArgumentExceptionIsThrown_WhenNoDataServiceIsPassedToTheConstructor()
-		{
-			//Arrange
-			var discountRulesService = new Mock<IDiscountRulesService>().Object;
-			var salesHistoryProvider = new Mock<ISalesHistoryService>().Object;
-
-			//Act
-			Action constructorAction = () => new ProductsBasket(salesHistoryProvider, discountRulesService, null);
-
-			//Assert
-			constructorAction.Should().Throw<ArgumentNullException>();
-		}
-
 		[TestCase(0)]
 		[TestCase(5)]
 		[TestCase(10)]
@@ -70,21 +37,6 @@ namespace Market.CheckoutComponent.Tests
 			products.Length.Should().Be(numberOfProducts);
 		}
 
-		private IProductDataService GenerateMockedDataService()
-		{
-			var mock = new Mock<IProductDataService>();
-			mock.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns<string>((m) =>
-			{
-				var productMock = new Mock<IProduct>();
-				productMock.Setup(k => k.Name).Returns(m);
-				var random = new Random();
-				productMock.Setup(k => k.Price).Returns(random.Next(1, 1000));
-				return productMock.Object;
-			});
-
-			return mock.Object;
-		}
-
 		[Test]
 		public void Add_DoesNotAddAnyItemsWhenNullIsPassed()
 		{
@@ -101,6 +53,55 @@ namespace Market.CheckoutComponent.Tests
 		}
 
 		[Test]
+		public void ArgumentExceptionIsThrown_WhenNoDataServiceIsPassedToTheConstructor()
+		{
+			//Arrange
+			var discountRulesService = new Mock<IDiscountRulesService>().Object;
+			var salesHistoryProvider = new Mock<ISalesHistoryService>().Object;
+
+			//Act
+			Action constructorAction = () => new ProductsBasket(salesHistoryProvider, discountRulesService, null);
+
+			//Assert
+			constructorAction.Should().Throw<ArgumentNullException>();
+		}
+
+		[Test]
+		public void ArgumentExceptionIsThrown_WhenNoSalesHistoryServiceIsPassedToTheConstructor()
+		{
+			//Arrange
+			var discountRulesService = new Mock<IDiscountRulesService>();
+
+			//Act
+			Action constructorAction = () => new ProductsBasket(null, discountRulesService.Object, null);
+
+			//Assert
+			constructorAction.Should().Throw<ArgumentNullException>();
+		}
+
+		[Test]
+		public void Checkout_ContainsAllDiscountsFromProvider()
+		{
+			//Arrange
+			var discountsProviderMock = new Mock<IDiscountRulesService>();
+			var discountRules = new[]
+			{
+				new Mock<IDiscountRule>().Object,
+				new Mock<IDiscountRule>().Object,
+				new Mock<IDiscountRule>().Object
+			};
+
+			discountsProviderMock.Setup(m => m.GetAllDiscountRules()).Returns(discountRules);
+			var productsBasket = new ProductsBasket(GetSalesHistoryServiceWithNoSetup(), discountsProviderMock.Object, GetDataServiceWithNoSetup());
+
+			//Act
+			var bill = productsBasket.Checkout();
+
+			//Assert
+			bill.DiscountsRules.Should().BeEquivalentTo(discountRules);
+		}
+
+		[Test]
 		public void Checkout_ReturnsBill()
 		{
 			//Arrange
@@ -111,6 +112,20 @@ namespace Market.CheckoutComponent.Tests
 
 			//Assert
 			bill.Should().NotBeNull();
+		}
+
+		[Test]
+		public void Checkout_ReturnsBillWithNoDiscounts_WhenNoDiscountRulesProviderServiceIsPassed()
+		{
+			//Arrange
+
+			var productsBasket = GetProductBasketWithNoSetup();
+
+			//Act
+			var bill = productsBasket.Checkout();
+
+			//Assert
+			bill.DiscountsRules.Length.Should().Be(0);
 		}
 
 		[Test]
@@ -128,31 +143,76 @@ namespace Market.CheckoutComponent.Tests
 			bill.Should().NotBeNull();
 		}
 
-		private ISalesHistoryService GetSalesHistoryServiceWithNoSetup()
+		[TestCase("ProductA")]
+		[TestCase("")]
+		[TestCase(null)]
+		public void DecreaseUnits_DoesNotRemoveAnything_WhenNoProductWithNameProvidedIsAdded(string particularProductName)
 		{
-			return new Mock<ISalesHistoryService>().Object;
+			//Arrange
+			var products = new[]
+			{
+				"testB",
+				"aabbcc"
+			};
+			var productsBasket = GetProductBasketWithMockedDataService();
+
+			//Act
+			foreach (var singleProduct in products)
+			{
+				productsBasket.Add(singleProduct);
+			}
+
+			productsBasket.DecreaseUnits(particularProductName);
+			var addedProducts = productsBasket.GetAllAdded();
+
+			//Assert
+			addedProducts.Length.Should().Be(products.Length);
+			addedProducts.Should().NotContain(m => m.Name == particularProductName);
 		}
 
-		private IProductDataService GetDataServiceWithNoSetup()
+		[Test]
+		public void DecreaseUnits_RemovesOneUnitOfTheProductWithNameProvided()
 		{
-			return new Mock<IProductDataService>().Object;
+			//Arrange
+			string particularProductName = "ProductA";
+			var products = new[]
+			{
+				"testB",
+				particularProductName,
+				particularProductName,
+				particularProductName,
+				particularProductName,
+				particularProductName,
+				"aabbcc"
+			};
+			var particularProductsUnits = products.Count(m => m == particularProductName);
+			var productsBasket = GetProductBasketWithMockedDataService();
+
+			//Act
+			foreach (var singleProduct in products)
+			{
+				productsBasket.Add(singleProduct);
+			}
+
+			productsBasket.DecreaseUnits(particularProductName);
+			var addedProducts = productsBasket.GetAllAdded();
+
+			//Assert
+			addedProducts.Length.Should().Be(products.Length - 1);
+			addedProducts.Count(m => m.Name == particularProductName).Should().Be(particularProductsUnits - 1);
 		}
 
-		private ProductsBasket GetProductBasketWithNoSetup()
+		[Test]
+		public void GetAll_ReturnsEmptyArray_WhenNoProductsWereAdded()
 		{
-			return new ProductsBasket(GetSalesHistoryServiceWithNoSetup(), null, GetDataServiceWithNoSetup());
-		}
+			//Arrange
+			var productsBasket = GetProductBasketWithNoSetup();
 
-		private ProductsBasket GetProductBasketWithMockedDataService()
-		{
-			return new ProductsBasket(GetSalesHistoryServiceWithNoSetup(), null, GenerateMockedDataService());
-		}
+			//Act
+			var addedProducts = productsBasket.GetAllAdded();
 
-		private Mock<ISalesHistoryService> GetSalesHistoryServiceMockWithActions()
-		{
-			var mock = new Mock<ISalesHistoryService>();
-			mock.Setup(m => m.Add(It.IsAny<Bill>()));
-			return mock;
+			//Assert
+			addedProducts.Length.Should().Be(0);
 		}
 
 		[Test]
@@ -178,74 +238,6 @@ namespace Market.CheckoutComponent.Tests
 
 			//Assert
 			addedProducts.Length.Should().Be(products.Length);
-		}
-
-		[Test]
-		public void GetAll_ReturnsEmptyArray_WhenNoProductsWereAdded()
-		{
-			//Arrange
-			var productsBasket = GetProductBasketWithNoSetup();
-
-			//Act
-			var addedProducts = productsBasket.GetAllAdded();
-
-			//Assert
-			addedProducts.Length.Should().Be(0);
-		}
-
-		[Test]
-		public void Remove_RemovesOnlyProductWithNameProvided()
-		{
-			//Arrange
-			string particularProductName = "ProductA";
-			var products = new[]
-			{
-				"testB",
-				particularProductName,
-				"aabbcc"
-			};
-			var productsBasket = GetProductBasketWithMockedDataService();
-
-			//Act
-			foreach (var singleProduct in products)
-			{
-				productsBasket.Add(singleProduct);
-			}
-
-			productsBasket.Remove(particularProductName);
-			var addedProducts = productsBasket.GetAllAdded();
-
-			//Assert
-			addedProducts.Length.Should().Be(products.Length - 1);
-			addedProducts.Should().NotContain(particularProductName);
-		}
-
-		[Test]
-		public void Remove_RemovesAllProductsWithNameProvided()
-		{
-			//Arrange
-			string particularProductName = "ProductA";
-			var products = new[]
-			{
-				"testB",
-				particularProductName,
-				particularProductName,
-				"aabbcc",
-			};
-			var productsBasket = GetProductBasketWithMockedDataService();
-
-			//Act
-			foreach (var singleProduct in products)
-			{
-				productsBasket.Add(singleProduct);
-			}
-
-			productsBasket.Remove(particularProductName);
-			var addedProducts = productsBasket.GetAllAdded();
-
-			//Assert
-			addedProducts.Length.Should().Be(products.Length - products.Count(m => m == particularProductName));
-			addedProducts.Should().NotContain(particularProductName);
 		}
 
 		[TestCase("ProductA")]
@@ -277,21 +269,17 @@ namespace Market.CheckoutComponent.Tests
 		}
 
 		[Test]
-		public void DecreaseUnits_RemovesOneUnitOfTheProductWithNameProvided()
+		public void Remove_RemovesAllProductsWithNameProvided()
 		{
 			//Arrange
 			string particularProductName = "ProductA";
 			var products = new[]
 			{
-				"testB", 
+				"testB",
 				particularProductName,
 				particularProductName,
-				particularProductName,
-				particularProductName,
-				particularProductName,
-				"aabbcc"
+				"aabbcc",
 			};
-			var particularProductsUnits = products.Count(m => m == particularProductName);
 			var productsBasket = GetProductBasketWithMockedDataService();
 
 			//Act
@@ -300,76 +288,87 @@ namespace Market.CheckoutComponent.Tests
 				productsBasket.Add(singleProduct);
 			}
 
-			productsBasket.DecreaseUnits(particularProductName);
+			productsBasket.Remove(particularProductName);
+			var addedProducts = productsBasket.GetAllAdded();
+
+			//Assert
+			addedProducts.Length.Should().Be(products.Length - products.Count(m => m == particularProductName));
+			addedProducts.Should().NotContain(particularProductName);
+		}
+
+		[Test]
+		public void Remove_RemovesOnlyProductWithNameProvided()
+		{
+			//Arrange
+			string particularProductName = "ProductA";
+			var products = new[]
+			{
+				"testB",
+				particularProductName,
+				"aabbcc"
+			};
+			var productsBasket = GetProductBasketWithMockedDataService();
+
+			//Act
+			foreach (var singleProduct in products)
+			{
+				productsBasket.Add(singleProduct);
+			}
+
+			productsBasket.Remove(particularProductName);
 			var addedProducts = productsBasket.GetAllAdded();
 
 			//Assert
 			addedProducts.Length.Should().Be(products.Length - 1);
-			addedProducts.Count(m => m.Name == particularProductName).Should().Be(particularProductsUnits - 1);
+			addedProducts.Should().NotContain(particularProductName);
 		}
 
-
-		[TestCase("ProductA")]
-		[TestCase("")]
-		[TestCase(null)]
-		public void DecreaseUnits_DoesNotRemoveAnything_WhenNoProductWithNameProvidedIsAdded(string particularProductName)
+		[SetUp]
+		public void SetUp()
 		{
-			//Arrange
-			var products = new[]
-			{
-				"testB",
-				"aabbcc"
-			};
-			var productsBasket = GetProductBasketWithMockedDataService();
-
-			//Act
-			foreach (var singleProduct in products)
-			{
-				productsBasket.Add(singleProduct);
-			}
-
-			productsBasket.DecreaseUnits(particularProductName);
-			var addedProducts = productsBasket.GetAllAdded();
-
-			//Assert
-			addedProducts.Length.Should().Be(products.Length);
-			addedProducts.Should().NotContain(m => m.Name == particularProductName);
+			productsGenerator = new ProductsMockObjectsGenerator();
 		}
 
-		[Test]
-		public void Checkout_ContainsAllDiscountsFromProvider()
+		private IProductDataService GenerateMockedDataService()
 		{
-			//Arrange
-			var discountsProviderMock = new Mock<IDiscountRulesService>();
-			var discountRules = new[]
+			var mock = new Mock<IProductDataService>();
+			mock.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns<string>((m) =>
 			{
-				new Mock<IDiscountRule>().Object,
-				new Mock<IDiscountRule>().Object,
-				new Mock<IDiscountRule>().Object
-			};
+				var productMock = new Mock<IProduct>();
+				productMock.Setup(k => k.Name).Returns(m);
+				var random = new Random();
+				productMock.Setup(k => k.Price).Returns(random.Next(1, 1000));
+				return productMock.Object;
+			});
 
-			discountsProviderMock.Setup(m => m.GetAllDiscountRules()).Returns(discountRules);
-			var productsBasket = new ProductsBasket(GetSalesHistoryServiceWithNoSetup(), discountsProviderMock.Object, GetDataServiceWithNoSetup());
-
-			//Act
-			var bill = productsBasket.Checkout();
-
-			//Assert
-			bill.DiscountsRules.Should().BeEquivalentTo(discountRules);
+			return mock.Object;
 		}
 
-		[Test]
-		public void Checkout_ReturnsBillWithNoDiscounts_WhenNoDiscountRulesProviderServiceIsPassed()
+		private IProductDataService GetDataServiceWithNoSetup()
 		{
-			//Arrange
+			return new Mock<IProductDataService>().Object;
+		}
 
-			var productsBasket = GetProductBasketWithNoSetup();
+		private ProductsBasket GetProductBasketWithMockedDataService()
+		{
+			return new ProductsBasket(GetSalesHistoryServiceWithNoSetup(), null, GenerateMockedDataService());
+		}
 
-			//Act
-			var bill = productsBasket.Checkout();
+		private ProductsBasket GetProductBasketWithNoSetup()
+		{
+			return new ProductsBasket(GetSalesHistoryServiceWithNoSetup(), null, GetDataServiceWithNoSetup());
+		}
 
-			//Assert
-			bill.DiscountsRules.Length.Should().Be(0);
+		private Mock<ISalesHistoryService> GetSalesHistoryServiceMockWithActions()
+		{
+			var mock = new Mock<ISalesHistoryService>();
+			mock.Setup(m => m.Add(It.IsAny<Bill>()));
+			return mock;
+		}
+
+		private ISalesHistoryService GetSalesHistoryServiceWithNoSetup()
+		{
+			return new Mock<ISalesHistoryService>().Object;
 		}
 	}
 }

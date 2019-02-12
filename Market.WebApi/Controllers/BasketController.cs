@@ -8,38 +8,31 @@ namespace Market.WebApi.Controllers
 	[ApiController]
 	public class BasketController : ControllerBase
 	{
-		private readonly IProductsBasket productsBasket;
-		private readonly IProductDataService productDataService;
 		private readonly IProductBasketService productBasketService;
 
-		public BasketController(IProductDataService productDataService,
-			IProductBasketService productBasketService)
+		public BasketController(IProductBasketService productBasketService)
 		{
-			this.productDataService = productDataService;
 			this.productBasketService = productBasketService;
-
-			productsBasket = productBasketService.GetCurrent();
-		}
-
-		[HttpGet]
-		public ActionResult<string> Checkout()
-		{
-			var bill = productsBasket.Checkout();
-			productBasketService.Reset();
-			return bill.ToString();
 		}
 
 		[HttpPost("{productName}")]
 		public ActionResult AddProduct(string productName)
 		{
-			productsBasket.Add(productName);
+			productBasketService.AddProduct(productName);
 			return Ok();
+		}
+
+		[HttpGet]
+		public ActionResult<string> Checkout()
+		{
+			var bill = productBasketService.Checkout();
+			return bill;
 		}
 
 		[HttpPost("{productName}")]
 		public void DecreaseUnits(string productName)
 		{
-			productsBasket.DecreaseUnits(productName);
+			productBasketService.DecreaseUnits(productName);
 		}
 	}
 }

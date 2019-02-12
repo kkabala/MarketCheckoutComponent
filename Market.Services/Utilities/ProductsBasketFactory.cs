@@ -7,9 +7,9 @@ namespace Market.Services.Utilities
 {
 	public class ProductsBasketFactory : IProductsBasketFactory
 	{
-		private readonly ISalesHistoryService salesHistoryService;
 		private readonly IDiscountRulesService discountRulesService;
 		private readonly IProductDataService productDataService;
+		private readonly ISalesHistoryService salesHistoryService;
 
 		public ProductsBasketFactory(ISalesHistoryService salesHistoryService,
 			IDiscountRulesService discountRulesService,

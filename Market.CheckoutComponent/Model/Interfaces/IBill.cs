@@ -2,8 +2,8 @@
 {
 	public interface IBill
 	{
-		IProduct[] Products { get; }
 		IDiscountRule[] DiscountsRules { get; }
+		IProduct[] Products { get; }
 		decimal Total { get; }
 	}
 }

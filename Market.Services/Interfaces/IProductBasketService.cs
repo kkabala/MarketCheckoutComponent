@@ -4,7 +4,8 @@ namespace Market.Services.Interfaces
 {
 	public interface IProductBasketService
 	{
-		IProductsBasket GetCurrent();
-		void Reset();
+		void AddProduct(string productName);
+		string Checkout();
+		void DecreaseUnits(string productName);
 	}
 }

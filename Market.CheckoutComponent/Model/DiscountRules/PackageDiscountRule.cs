@@ -6,12 +6,11 @@ namespace Market.CheckoutComponent.Model.DiscountRules
 {
 	public class PackageDiscountRule : IDiscountRule
 	{
-		public string Name { get; }
 		private readonly decimal discountAmount;
 		private readonly string[] packageProductNames;
 
-		public PackageDiscountRule(string name, 
-			decimal discountAmount, 
+		public PackageDiscountRule(string name,
+			decimal discountAmount,
 			params string[] packageProductNames)
 		{
 			Name = name;
@@ -19,13 +18,15 @@ namespace Market.CheckoutComponent.Model.DiscountRules
 			this.packageProductNames = packageProductNames;
 		}
 
+		public string Name { get; }
+
 		public decimal Calculate(IEnumerable<IProduct> products)
 		{
 			var groupedProducts = products?.GroupBy(m => m.Name).ToList();
 
-			return (groupedProducts != null 
-				&& packageProductNames.All(m => groupedProducts.Any(p => p.Key == m))) 
-				? discountAmount * groupedProducts.Select(m => m.Count()).Min() 
+			return (groupedProducts != null
+				&& packageProductNames.All(m => groupedProducts.Any(p => p.Key == m)))
+				? discountAmount * groupedProducts.Select(m => m.Count()).Min()
 				 : 0;
 		}
 	}

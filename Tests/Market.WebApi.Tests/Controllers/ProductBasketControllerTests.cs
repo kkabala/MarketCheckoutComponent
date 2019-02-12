@@ -13,100 +13,39 @@ namespace Market.WebApi.Tests.Controllers
 	[TestFixture]
 	public class ProductBasketControllerTests
 	{
+		private const string billText = "Test ToString method output";
+
 		[Test]
 		public void Checkout_ReturnsBillInTextForm()
 		{
 			//Arrange
-			var product = GetMockedProduct("A", 50);
-			var dataService = new Mock<IProductDataService>();
-			dataService.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns(product);
-			var controller = new BasketController(dataService.Object, GetBasketProvider().Object);
+			var mock = new Mock<IProductBasketService>();
+			mock.Setup(m => m.Checkout()).Returns(billText);
+
+			var controller = new BasketController(mock.Object);
 
 			//Act
-			controller.AddProduct(product.Name);
+			controller.AddProduct("test");
 			var result = controller.Checkout();
 
 			//Assert
 			result.Value.Should().NotBeNull();
-			result.Value.Should().Be(BillsTestToStringMethodOutput);
+			result.Value.Should().Be(billText);
 		}
-
 
 		[Test]
 		public void DecreaseUnits_ExecutesUnderlyingMethodInTheBasket()
 		{
 			//Arrange
-			var product = GetMockedProduct("A", 50);
-			var dataService = new Mock<IProductDataService>();
-			dataService.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns(product);
-
-			var billMock = new Mock<IBill>();
-			billMock.Setup(m => m.ToString()).Returns(BillsTestToStringMethodOutput);
-
-			var basketMock = new Mock<IProductsBasket>();
-			basketMock.Setup(m => m.Checkout()).Returns(billMock.Object);
-
-			var factoryMock = new Mock<IProductBasketService>();
-			factoryMock.Setup(m => m.GetCurrent()).Returns(basketMock.Object);
+			var basketService = new Mock<IProductBasketService>();
+			basketService.Setup(m => m.DecreaseUnits(It.IsAny<string>()));
 
 			//Act
-			var controller1 = new BasketController(dataService.Object, factoryMock.Object);
-			controller1.DecreaseUnits(product.Name);
+			var controller1 = new BasketController(basketService.Object);
+			controller1.DecreaseUnits("s");
 
 			//Assert
-			basketMock.Verify(m => m.DecreaseUnits(It.IsAny<string>()), Times.Once);
-		}
-
-		[TestCase(0)]
-		[TestCase(1)]
-		[TestCase(5)]
-		public void Checkout_ResetsTheBasket(int numberOfTimesThatCheckoutIsExecuted)
-		{
-			//Arrange
-			var product = GetMockedProduct("A", 50);
-			var dataService = new Mock<IProductDataService>();
-			dataService.Setup(m => m.GetProductByName(It.IsAny<string>())).Returns(product);
-			var saleshistoryServiceMock = new Mock<ISalesHistoryService>();
-			var dataServiceMock = new Mock<IProductDataService>();
-			var basketProviderService = new Mock<IProductBasketService>();
-			basketProviderService.Setup(m => m.Reset());
-			basketProviderService.Setup(m => m.GetCurrent()).Returns(new ProductsBasket(saleshistoryServiceMock.Object, null, dataServiceMock.Object));
-			var controller = new BasketController(dataService.Object,
-				basketProviderService.Object);
-
-			//Act
-			for (int i = 0; i < numberOfTimesThatCheckoutIsExecuted; i++)
-			{
-				controller.AddProduct(product.Name);
-				controller.Checkout();
-			}
-
-			//Assert
-			basketProviderService.Verify(m => m.Reset(), Times.Exactly(numberOfTimesThatCheckoutIsExecuted));
-		}
-
-		private IProduct GetMockedProduct(string name, decimal price)
-		{
-			var mock = new Mock<IProduct>();
-			mock.Setup(m => m.Name).Returns(name);
-			mock.Setup(m => m.Price).Returns(price);
-			return mock.Object;
-		}
-
-		private const string BillsTestToStringMethodOutput = "Test ToString method output";
-
-		private Mock<IProductBasketService> GetBasketProvider()
-		{
-			var billMock = new Mock<IBill>();
-			billMock.Setup(m => m.ToString()).Returns(BillsTestToStringMethodOutput);
-
-			var basketMock = new Mock<IProductsBasket>();
-			basketMock.Setup(m => m.Checkout()).Returns(billMock.Object);
-
-			var mock = new Mock<IProductBasketService>();
-			mock.Setup(m => m.GetCurrent()).Returns(basketMock.Object);
-
-			return mock;
+			basketService.Verify(m => m.DecreaseUnits(It.IsAny<string>()), Times.Once);
 		}
 	}
 }

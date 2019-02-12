@@ -3,9 +3,9 @@ using Moq;
 
 namespace Market.CheckoutComponent.Tests
 {
-	class ProductsMockObjectsGenerator
+	internal class ProductsMockObjectsGenerator
 	{
-		public IProduct Generate(string name =null ,decimal price = 0)
+		public IProduct Generate(string name = null, decimal price = 0)
 		{
 			var mock = new Mock<IProduct>();
 			mock.SetupGet(m => m.Name).Returns(name);

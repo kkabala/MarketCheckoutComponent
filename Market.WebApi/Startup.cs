@@ -1,5 +1,4 @@
-﻿using System;
-using Market.CheckoutComponent.Interfaces;
+﻿using Market.CheckoutComponent.Interfaces;
 using Market.CheckoutComponent.Services.Interfaces;
 using Market.Services;
 using Market.Services.Interfaces;
@@ -10,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Market.WebApi
 {
@@ -21,6 +21,22 @@ namespace Market.WebApi
 		}
 
 		public IConfiguration Configuration { get; }
+
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
+			else
+			{
+				app.UseHsts();
+			}
+
+			app.UseHttpsRedirection();
+			app.UseMvc();
+		}
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
@@ -41,22 +57,6 @@ namespace Market.WebApi
 
 			//For simplicity the api handles one user at a time
 			services.AddSingleton<IProductBasketService, ProductBasketService>();
-		}
-
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
-			else
-			{
-				app.UseHsts();
-			}
-
-			app.UseHttpsRedirection();
-			app.UseMvc();
 		}
 	}
 }

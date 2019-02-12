@@ -15,14 +15,31 @@ namespace Market.Services
 			this.productsBasketFactory = productsBasketFactory;
 		}
 
-		public IProductsBasket GetCurrent()
+		private IProductsBasket GetCurrent()
 		{
 			return current ?? (current = productsBasketFactory.Create());
 		}
 
-		public void Reset()
+		private void Reset()
 		{
 			current = null;
+		}
+
+		public void AddProduct(string productName)
+		{
+			GetCurrent().Add(productName);
+		}
+
+		public string Checkout()
+		{
+			var bill = GetCurrent().Checkout();
+			Reset();
+			return bill.ToString();
+		}
+
+		public void DecreaseUnits(string productName)
+		{
+			GetCurrent().DecreaseUnits(productName);
 		}
 	}
 }

@@ -5,17 +5,16 @@ using System.Text;
 
 namespace Market.CheckoutComponent.Model
 {
-	public class Bill : IBill
+	internal class Bill : IBill
 	{
-		private const string ProductHeader = "BasicProduct";
-		private const string PriceHeader = "Price";
-		private const string UnitHeader = "Unit";
-		private const string AmountHeader = "Amount";
-
-		private const string ProductColumnFormatter = "{0, -15}";
-		private const string PriceColumnFormatter = "{0, -8}";
-		private const string UnitColumnFormatter = "{0, 5}";
 		private const string AmountColumnFormatter = "{0, 8}";
+		private const string AmountHeader = "Amount";
+		private const string PriceColumnFormatter = "{0, -8}";
+		private const string PriceHeader = "Price";
+		private const string ProductColumnFormatter = "{0, -15}";
+		private const string ProductHeader = "BasicProduct";
+		private const string UnitColumnFormatter = "{0, 5}";
+		private const string UnitHeader = "Unit";
 
 		public Bill(IProduct[] products, IDiscountRule[] discountsRule)
 		{
@@ -23,8 +22,8 @@ namespace Market.CheckoutComponent.Model
 			DiscountsRules = discountsRule ?? new IDiscountRule[] { };
 		}
 
-		public IProduct[] Products { get; }
 		public IDiscountRule[] DiscountsRules { get; }
+		public IProduct[] Products { get; }
 
 		public decimal Total
 		{
@@ -44,10 +43,26 @@ namespace Market.CheckoutComponent.Model
 			return outputBuilder.ToString();
 		}
 
-		private void ApplyTotalInfo(StringBuilder outputBuilder)
+		private void ApplyDiscountsInfo(StringBuilder outputBuilder)
 		{
+			if (!DiscountsRules.Any())
+			{
+				return;
+			}
 			outputBuilder.AppendLine();
-			outputBuilder.Append($"Total: {Total}");
+			outputBuilder.AppendLine("Discounts applied:");
+
+			foreach (var singleDiscount in DiscountsRules)
+			{
+				var discountValue = singleDiscount.Calculate(Products);
+				if (discountValue >= 0)
+				{
+					continue;
+				}
+				outputBuilder.Append(singleDiscount.Name);
+				outputBuilder.Append(": ");
+				outputBuilder.AppendLine(discountValue.ToString("F2"));
+			}
 		}
 
 		private void ApplyProductsHeader(StringBuilder outputBuilder)
@@ -76,26 +91,10 @@ namespace Market.CheckoutComponent.Model
 			outputBuilder.AppendLine();
 		}
 
-		private void ApplyDiscountsInfo(StringBuilder outputBuilder)
+		private void ApplyTotalInfo(StringBuilder outputBuilder)
 		{
-			if (!DiscountsRules.Any())
-			{
-				return;
-			}
 			outputBuilder.AppendLine();
-			outputBuilder.AppendLine("Discounts applied:");
-
-			foreach (var singleDiscount in DiscountsRules)
-			{
-				var discountValue = singleDiscount.Calculate(Products);
-				if (discountValue >= 0)
-				{
-					continue;
-				}
-				outputBuilder.Append(singleDiscount.Name);
-				outputBuilder.Append(": ");
-				outputBuilder.AppendLine(discountValue.ToString("F2"));
-			}
+			outputBuilder.Append($"Total: {Total}");
 		}
 	}
 }

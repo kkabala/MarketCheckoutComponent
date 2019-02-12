@@ -1,6 +1,6 @@
 ﻿using Market.CheckoutComponent.Model.Interfaces;
 
-namespace Market.CheckoutComponent.Model
+namespace Market.Services.DTOs
 {
 	public class BasicProduct : IProduct
 	{
